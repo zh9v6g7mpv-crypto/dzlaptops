@@ -415,9 +415,10 @@ html.js .reveal.in { opacity: 1; transform: none; }
 }
 
 
-/* single-file view switching */
-.view { display: none; }
-.view.active { display: block; }
+/* single-file view switching — only hide with JS so the page
+   still shows all content in previews that don't run scripts */
+html.js .view { display: none; }
+html.js .view.active { display: block; }
 
 </style>
 <script>
@@ -436,10 +437,344 @@ html.js .reveal.in { opacity: 1; transform: none; }
 </script>
 </head>
 <body>
-  <div id="site-header"></div>
-  <main id="app"></main>
-  <div id="site-footer"></div>
-
+<div id="site-header">
+    <nav class="nav" id="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#home" data-view="home" aria-label="DZLaptops home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg><span>DZ<b>Laptops</b></span>
+        </a>
+        <div class="nav-links">
+          <a href="#home" data-view="home" data-i18n="nav.home" class="active">Home</a>
+          <a href="#categories" data-view="categories" data-i18n="nav.categories">Brands</a>
+          <a href="#contact" data-view="contact" data-i18n="nav.contact">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <select class="lang-select" id="langSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="ar">العربية</option>
+          </select>
+          <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" data-i18n-aria="nav.theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button>
+          <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-expanded="false" data-i18n-aria="nav.menu" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+        </div>
+      </div>
+    </nav></div>
+<main id="app"><section class="view" id="view-home">
+      <header class="hero">
+        <div class="container">
+          <p class="eyebrow" data-i18n="hero.eyebrow">Laptops in Oran, Algeria</p>
+          <h1><span data-i18n="hero.title1">The laptop you want.</span><br><span class="hero-gradient-text" data-i18n="hero.title2">The service you deserve.</span></h1>
+          <p class="lead" data-i18n="hero.lead">Premium laptops from the brands you trust — with warranty, a 24-hour test period, and free delivery across the city.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="#categories" data-view="categories" data-i18n="hero.cta1">Browse brands</a>
+            <a class="btn btn-ghost btn-lg" href="#contact" data-view="contact" data-i18n="hero.cta2">Contact us</a>
+          </div>
+          <div class="hero-visual reveal" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg>
+          </div>
+        </div>
+      </header>
+      <section><div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow" data-i18n="perks.eyebrow">Why DZLaptops</p>
+          <h2 data-i18n="perks.title">Everything included. No surprises.</h2>
+          <p data-i18n="perks.sub">Every laptop we sell comes backed by real guarantees.</p>
+        </div>
+    <div class="grid grid-3">
+      
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
+        <h3 data-i18n="perk.warranty.t">3-Month Warranty</h3>
+        <p data-i18n="perk.warranty.d">Every laptop is covered for a full 3 months after purchase.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></div>
+        <h3 data-i18n="perk.test.t">24h Test Period</h3>
+        <p data-i18n="perk.test.d">Take it home and test it for 24 hours before you commit.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="truck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h11v11H2z"></path><path d="M13 8h4l4 4v4h-8"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg></div>
+        <h3 data-i18n="perk.delivery.t">Free Delivery</h3>
+        <p data-i18n="perk.delivery.d">We deliver your laptop to you, free of charge.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 12H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg></div>
+        <h3 data-i18n="perk.handbag.t">Free Handbag</h3>
+        <p data-i18n="perk.handbag.d">A quality carrying bag comes free with every laptop.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="plug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"></path><path d="M9 8V2M15 8V2"></path><path d="M18 8H6v3a6 6 0 0 0 12 0z"></path></svg></div>
+        <h3 data-i18n="perk.charger.t">Original Charger</h3>
+        <p data-i18n="perk.charger.d">Every device ships with its genuine original charger.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="sparkles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"></path><path d="M19 15l.7 1.8L21.5 17.5 19.7 18.2 19 20l-.7-1.8L16.5 17.5l1.8-.7z"></path></svg></div>
+        <h3 data-i18n="perk.authentic.t">Genuine Devices</h3>
+        <p data-i18n="perk.authentic.d">Trusted brands, honest condition, and real support.</p>
+      </article>
+    </div>
+      </div></section>
+      <section style="background:var(--bg-elevated);"><div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow" data-i18n="brands.eyebrow">Shop by brand</p>
+          <h2 data-i18n="brands.title">Choose your brand</h2>
+          <p data-i18n="brands.sub">From everyday work machines to high-end gaming and creation.</p>
+        </div>
+        <div class="brand-grid reveal" id="brandPreview">
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Lenovo%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Lenovo">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Lenovo</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20HP%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="HP">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">HP</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Dell%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Dell">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Dell</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Asus%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Asus">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Asus</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Huawei%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Huawei">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Huawei</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a></div>
+        <div style="text-align:center;margin-top:var(--space-6);">
+          <a class="btn btn-primary" href="#categories" data-view="categories">
+            <span data-i18n="brands.viewall">View all brands</span><span data-icon="arrow" class="inline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </a>
+        </div>
+      </div></section>
+      <section><div class="container">
+        <div class="section-head reveal"><p class="eyebrow" data-i18n="info.eyebrow">Visit the shop</p><h2 data-i18n="info.title">Hours &amp; location</h2></div>
+        <div class="info-grid">
+    <article class="card info-card reveal">
+      <div class="perk-icon" data-icon="clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></div>
+      <h3 data-i18n="info.hours.t">Opening hours</h3>
+      <div class="hours-row"><span class="day" data-i18n="info.hours.days">Saturday — Thursday</span><span class="time" data-i18n="info.hours.time">10:00 – 20:00</span></div>
+      <div class="hours-row"><span class="day" data-i18n="info.hours.friday">Friday</span><span class="time badge-closed" data-i18n="info.hours.closed">Closed</span></div>
+    </article>
+    <article class="card info-card reveal">
+      <div class="perk-icon" data-icon="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <h3 data-i18n="info.location.t">Our location</h3>
+      <p style="font-size:1.15rem;font-weight:600;margin-bottom:6px;" data-i18n="info.location.city">Oran, Algeria</p>
+      <p class="muted" data-i18n="info.location.d">Come see our laptops in person at the shop.</p>
+      <a class="btn btn-ghost" style="margin-top:var(--space-4);" data-map="" href="https://goo.gl/maps/xFQfuoDeWHXN9hqJ9" target="_blank" rel="noopener">
+        <span data-icon="pin" class="inline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span data-i18n="info.location.map">Open in Maps</span>
+      </a>
+    </article></div>
+      </div></section>
+      
+    <section><div class="container"><div class="banner reveal">
+      <h2 data-i18n="banner.title">Ready to find your laptop?</h2>
+      <p data-i18n="banner.sub">Message us on WhatsApp or Instagram and we will help you pick the right machine.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="#contact" data-view="contact" data-i18n="banner.cta1">Contact us</a>
+        <a class="btn btn-ghost btn-lg" href="#categories" data-view="categories" data-i18n="banner.cta2">See brands</a>
+      </div>
+    </div></div></section></section><section class="view" id="view-categories">
+      <header class="page-header"><div class="container">
+        <p class="eyebrow" data-i18n="brands.eyebrow">Shop by brand</p>
+        <h1 data-i18n="cat.title">Laptop brands</h1>
+        <p data-i18n="cat.sub">Ten trusted brands. Tap a brand to ask us about available models.</p>
+      </div></header>
+      <section style="padding-top:var(--space-4);"><div class="container">
+        <div class="brand-grid reveal" id="brandGrid">
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Lenovo%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Lenovo">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Lenovo</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20HP%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="HP">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">HP</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Dell%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Dell">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Dell</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Asus%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Asus">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Asus</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Huawei%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Huawei">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Huawei</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20MacBook%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="MacBook">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">MacBook</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Microsoft%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Microsoft">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Microsoft</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Samsung%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Samsung">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Samsung</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20MSI%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="MSI">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">MSI</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a>
+      <a class="brand-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20do%20you%20have%20Acer%20laptops%20available%3F" target="_blank" rel="noopener" data-brand="Acer">
+        <div class="brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg></div>
+        <div class="brand-name">Acer</div>
+        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      </a></div>
+        <p class="muted reveal" style="text-align:center;margin-top:var(--space-6);max-width:620px;margin-inline:auto;" data-i18n="cat.note">Availability changes often — message us to check current stock and prices.</p>
+        <div style="text-align:center;margin-top:var(--space-5);">
+          <a class="btn btn-primary" href="#contact" data-view="contact" data-i18n="hero.cta2">Contact us</a>
+        </div>
+      </div></section>
+      
+    <section><div class="container"><div class="banner reveal">
+      <h2 data-i18n="banner.title">Ready to find your laptop?</h2>
+      <p data-i18n="banner.sub">Message us on WhatsApp or Instagram and we will help you pick the right machine.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="#contact" data-view="contact" data-i18n="banner.cta1">Contact us</a>
+        <a class="btn btn-ghost btn-lg" href="#categories" data-view="categories" data-i18n="banner.cta2">See brands</a>
+      </div>
+    </div></div></section></section><section class="view" id="view-contact">
+      <header class="page-header"><div class="container">
+        <p class="eyebrow" data-i18n="nav.contact">Contact</p>
+        <h1 data-i18n="contact.title">Get in touch</h1>
+        <p data-i18n="contact.sub">Call, message, or visit us. We reply fast on WhatsApp.</p>
+      </div></header>
+      <section style="padding-top:var(--space-4);"><div class="container">
+        <div class="contact-grid reveal" id="contactGrid">
+        <a class="card contact-card" href="tel:0552425776">
+          <div class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.9 2z"></path></svg></div>
+          <div class="c-body"><span class="c-label" data-i18n="contact.phone1">Phone / WhatsApp</span><span class="c-value">0552425776</span></div>
+        </a>
+        <a class="card contact-card" href="tel:0558553652">
+          <div class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.9 2z"></path></svg></div>
+          <div class="c-body"><span class="c-label" data-i18n="contact.phone2">Phone / WhatsApp</span><span class="c-value">0558553652</span></div>
+        </a>
+        <a class="card contact-card" href="https://wa.me/213552425776?text=Hi%20DZLaptops%2C%20I%20would%20like%20some%20information." target="_blank" rel="noopener">
+          <div class="perk-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.6.2-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.6-1.5-.9-2.1-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3 0 1.4 1 2.7 1.1 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.2-.5-.3z"></path><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20z"></path></svg></div>
+          <div class="c-body"><span class="c-label" data-i18n="contact.wa">WhatsApp</span><span class="c-value">0552425776</span></div>
+        </a>
+        <a class="card contact-card" href="https://wa.me/213558553652?text=Hi%20DZLaptops%2C%20I%20would%20like%20some%20information." target="_blank" rel="noopener">
+          <div class="perk-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.6.2-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.6-1.5-.9-2.1-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3 0 1.4 1 2.7 1.1 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.2-.5-.3z"></path><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20z"></path></svg></div>
+          <div class="c-body"><span class="c-label" data-i18n="contact.wa">WhatsApp</span><span class="c-value">0558553652</span></div>
+        </a>
+        <a class="card contact-card" href="https://instagram.com/dzlaptops" target="_blank" rel="noopener">
+          <div class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></div>
+          <div class="c-body"><span class="c-label" data-i18n="contact.ig">Instagram</span><span class="c-value">@dzlaptops</span></div>
+        </a>
+        <a class="card contact-card" href="https://facebook.com/dzlaptops" target="_blank" rel="noopener">
+          <div class="perk-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"></path></svg></div>
+          <div class="c-body"><span class="c-label" data-i18n="contact.fb">Facebook</span><span class="c-value">@dzlaptops</span></div>
+        </a></div>
+      </div></section>
+      <section style="background:var(--bg-elevated);"><div class="container">
+        <div class="info-grid">
+    <article class="card info-card reveal">
+      <div class="perk-icon" data-icon="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <h3 data-i18n="contact.visit.t">Visit us</h3>
+      <p style="font-size:1.15rem;font-weight:600;margin-bottom:6px;" data-i18n="info.location.city">Oran, Algeria</p>
+      <p class="muted" data-i18n="info.location.d">Come see our laptops in person at the shop.</p>
+      <a class="btn btn-ghost" style="margin-top:var(--space-4);" data-map="" href="https://goo.gl/maps/xFQfuoDeWHXN9hqJ9" target="_blank" rel="noopener">
+        <span data-icon="pin" class="inline-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span data-i18n="info.location.map">Open in Maps</span>
+      </a>
+    </article>
+    <article class="card info-card reveal">
+      <div class="perk-icon" data-icon="clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></div>
+      <h3 data-i18n="contact.hours.t">When we are open</h3>
+      <div class="hours-row"><span class="day" data-i18n="info.hours.days">Saturday — Thursday</span><span class="time" data-i18n="info.hours.time">10:00 – 20:00</span></div>
+      <div class="hours-row"><span class="day" data-i18n="info.hours.friday">Friday</span><span class="time badge-closed" data-i18n="info.hours.closed">Closed</span></div>
+    </article></div>
+      </div></section>
+      <section><div class="container">
+        <div class="section-head reveal"><p class="eyebrow" data-i18n="perks.eyebrow">Why DZLaptops</p><h2 data-i18n="perks.title">Everything included. No surprises.</h2></div>
+        
+    <div class="grid grid-3">
+      
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
+        <h3 data-i18n="perk.warranty.t">3-Month Warranty</h3>
+        <p data-i18n="perk.warranty.d">Every laptop is covered for a full 3 months after purchase.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="clock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></div>
+        <h3 data-i18n="perk.test.t">24h Test Period</h3>
+        <p data-i18n="perk.test.d">Take it home and test it for 24 hours before you commit.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="truck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h11v11H2z"></path><path d="M13 8h4l4 4v4h-8"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg></div>
+        <h3 data-i18n="perk.delivery.t">Free Delivery</h3>
+        <p data-i18n="perk.delivery.d">We deliver your laptop to you, free of charge.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="bag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 12H5z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg></div>
+        <h3 data-i18n="perk.handbag.t">Free Handbag</h3>
+        <p data-i18n="perk.handbag.d">A quality carrying bag comes free with every laptop.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="plug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"></path><path d="M9 8V2M15 8V2"></path><path d="M18 8H6v3a6 6 0 0 0 12 0z"></path></svg></div>
+        <h3 data-i18n="perk.charger.t">Original Charger</h3>
+        <p data-i18n="perk.charger.d">Every device ships with its genuine original charger.</p>
+      </article>
+      <article class="card perk reveal">
+        <div class="perk-icon" data-icon="sparkles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"></path><path d="M19 15l.7 1.8L21.5 17.5 19.7 18.2 19 20l-.7-1.8L16.5 17.5l1.8-.7z"></path></svg></div>
+        <h3 data-i18n="perk.authentic.t">Genuine Devices</h3>
+        <p data-i18n="perk.authentic.d">Trusted brands, honest condition, and real support.</p>
+      </article>
+    </div>
+      </div></section></section></main>
+<div id="site-footer">
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a class="brand" href="#home" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path></svg><span>DZ<b>Laptops</b></span></a>
+            <p data-i18n="footer.about">Premium laptops in Oran, Algeria — warranty, a 24h test period, free delivery, a free handbag, and the original charger with every device.</p>
+            <div class="socials">
+              <a href="https://instagram.com/dzlaptops" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle></svg></a>
+              <a href="https://facebook.com/dzlaptops" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"></path></svg></a>
+              <a href="https://wa.me/213552425776" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.6.2-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.6-1.5-.9-2.1-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3 0 1.4 1 2.7 1.1 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.2-.5-.3z"></path><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20z"></path></svg></a>
+            </div>
+          </div>
+          <div>
+            <h4 data-i18n="footer.links">Explore</h4>
+            <ul>
+              <li><a href="#home" data-view="home" data-i18n="nav.home">Home</a></li>
+              <li><a href="#categories" data-view="categories" data-i18n="nav.categories">Brands</a></li>
+              <li><a href="#contact" data-view="contact" data-i18n="nav.contact">Contact</a></li>
+              <li><a href="https://goo.gl/maps/xFQfuoDeWHXN9hqJ9" target="_blank" rel="noopener" data-i18n="info.location.map">Open in Maps</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer.contact">Contact</h4>
+            <ul>
+              <li><a href="tel:0552425776">0552425776</a></li>
+              <li><a href="tel:0558553652">0558553652</a></li>
+              <li><a href="https://instagram.com/dzlaptops" target="_blank" rel="noopener">@dzlaptops</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© <span id="year">2026</span> DZLaptops · <span data-i18n="footer.rights">All rights reserved.</span></span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> <span data-i18n="footer.made">Oran, Algeria</span></span>
+        </div>
+      </div>
+    </footer></div>
   <script>
 /* =========================================================
    DZLaptops — i18n dictionary (EN / FR / AR)
@@ -728,434 +1063,97 @@ function initLang() {
 }
 
 /* =========================================================
-   DZLaptops — shared chrome (nav + footer) + shop data
-   Injected into #site-header / #site-footer on each page.
-   ========================================================= */
-
-const SHOP = {
-  phone1: '0552425776',
-  phone2: '0558553652',
-  wa1: '213552425776',
-  wa2: '213558553652',
-  instagram: 'https://instagram.com/dzlaptops',
-  facebook: 'https://facebook.com/dzlaptops',
-  map: 'https://goo.gl/maps/xFQfuoDeWHXN9hqJ9',
-};
-
-/* Laptop brands (name-based cards; models on request) */
-const BRANDS = [
-  'Lenovo', 'HP', 'Dell', 'Asus', 'Huawei',
-  'MacBook', 'Microsoft', 'Samsung', 'MSI', 'Acer',
-];
-
-/* ---- SVG icon set (Lucide-style, currentColor) ---- */
-const ICON = {
-  laptop: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>',
-  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
-  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
-  menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>',
-  shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
-  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
-  truck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h11v11H2z"/><path d="M13 8h4l4 4v4h-8"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>',
-  bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 12H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
-  plug: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2M15 8V2"/><path d="M18 8H6v3a6 6 0 0 0 12 0z"/></svg>',
-  sparkles: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.7 1.8L21.5 17.5 19.7 18.2 19 20l-.7-1.8L16.5 17.5l1.8-.7z"/></svg>',
-  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',
-  phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.9 2z"/></svg>',
-  whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.6.2-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.6-1.5-.9-2.1-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3 0 1.4 1 2.7 1.1 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.6.2-1.2.2-1.3-.1-.2-.3-.2-.5-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20z"/></svg>',
-  instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
-  facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>',
-  arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
-};
-
-function buildHeader(active) {
-  const link = (page, key, label) =>
-    `<a href="${page}"${active === key ? ' class="active"' : ''} data-i18n="nav.${key}">${label}</a>`;
-
-  return `
-  <nav class="nav" id="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html" aria-label="DZLaptops home">
-        ${ICON.laptop}<span>DZ<b>Laptops</b></span>
-      </a>
-      <div class="nav-links">
-        ${link('index.html', 'home', 'Home')}
-        ${link('categories.html', 'categories', 'Brands')}
-        ${link('contact.html', 'contact', 'Contact')}
-      </div>
-      <div class="nav-actions">
-        <select class="lang-select" id="langSelect" aria-label="Language">
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-          <option value="ar">العربية</option>
-        </select>
-        <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false"
-          data-i18n-aria="nav.theme" aria-label="Toggle theme">
-          <span class="theme-sun">${ICON.sun}</span>
-        </button>
-        <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-expanded="false"
-          data-i18n-aria="nav.menu" aria-label="Menu">
-          ${ICON.menu}
-        </button>
-      </div>
-    </div>
-  </nav>`;
-}
-
-function buildFooter() {
-  return `
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <a class="brand" href="index.html">${ICON.laptop}<span>DZ<b>Laptops</b></span></a>
-          <p data-i18n="footer.about">Premium laptops in Oran, Algeria.</p>
-          <div class="socials">
-            <a href="${SHOP.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ICON.instagram}</a>
-            <a href="${SHOP.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${ICON.facebook}</a>
-            <a href="https://wa.me/${SHOP.wa1}" target="_blank" rel="noopener" aria-label="WhatsApp">${ICON.whatsapp}</a>
-          </div>
-        </div>
-        <div>
-          <h4 data-i18n="footer.links">Explore</h4>
-          <ul>
-            <li><a href="index.html" data-i18n="nav.home">Home</a></li>
-            <li><a href="categories.html" data-i18n="nav.categories">Brands</a></li>
-            <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
-            <li><a href="${SHOP.map}" target="_blank" rel="noopener" data-i18n="info.location.map">Open in Maps</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 data-i18n="footer.contact">Contact</h4>
-          <ul>
-            <li><a href="tel:${SHOP.phone1}">${SHOP.phone1}</a></li>
-            <li><a href="tel:${SHOP.phone2}">${SHOP.phone2}</a></li>
-            <li><a href="${SHOP.instagram}" target="_blank" rel="noopener">@dzlaptops</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>© <span id="year"></span> DZLaptops · <span data-i18n="footer.rights">All rights reserved.</span></span>
-        <span>${ICON.pin} <span data-i18n="footer.made">Oran, Algeria</span></span>
-      </div>
-    </div>
-  </footer>`;
-}
-
-/* =========================================================
-   DZLaptops — single-file bundle logic
-   (header/footer/views + router + theme + i18n glue)
-   Depends on: I18N, applyLang, initLang (i18n.js) and
-   ICON, SHOP, BRANDS (components.js constants).
+   DZLaptops — progressive enhancement for the STATIC bundle.
+   The HTML already contains all content; this only adds
+   theme toggle, language switching, view routing and menu.
+   Depends on: I18N, applyLang, initLang (i18n.js).
    ========================================================= */
 (function () {
-  /* ---------- Chrome ---------- */
-  function header() {
-    const link = (view, key) =>
-      `<a href="#${view}" data-view="${view}" data-i18n="nav.${key}">${key}</a>`;
-    return `
-    <nav class="nav" id="nav">
-      <div class="nav-inner">
-        <a class="brand" href="#home" data-view="home" aria-label="DZLaptops home">
-          ${ICON.laptop}<span>DZ<b>Laptops</b></span>
-        </a>
-        <div class="nav-links">
-          ${link('home', 'home')}
-          ${link('categories', 'categories')}
-          ${link('contact', 'contact')}
-        </div>
-        <div class="nav-actions">
-          <select class="lang-select" id="langSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="ar">العربية</option>
-          </select>
-          <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false"
-            data-i18n-aria="nav.theme" aria-label="Toggle theme">${ICON.sun}</button>
-          <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-expanded="false"
-            data-i18n-aria="nav.menu" aria-label="Menu">${ICON.menu}</button>
-        </div>
-      </div>
-    </nav>`;
-  }
+  var SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  var MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  var META = { home: 'meta.home', categories: 'meta.categories', contact: 'meta.contact' };
 
-  function footer() {
-    return `
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div>
-            <a class="brand" href="#home" data-view="home">${ICON.laptop}<span>DZ<b>Laptops</b></span></a>
-            <p data-i18n="footer.about"></p>
-            <div class="socials">
-              <a href="${SHOP.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ICON.instagram}</a>
-              <a href="${SHOP.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${ICON.facebook}</a>
-              <a href="https://wa.me/${SHOP.wa1}" target="_blank" rel="noopener" aria-label="WhatsApp">${ICON.whatsapp}</a>
-            </div>
-          </div>
-          <div>
-            <h4 data-i18n="footer.links"></h4>
-            <ul>
-              <li><a href="#home" data-view="home" data-i18n="nav.home"></a></li>
-              <li><a href="#categories" data-view="categories" data-i18n="nav.categories"></a></li>
-              <li><a href="#contact" data-view="contact" data-i18n="nav.contact"></a></li>
-              <li><a href="${SHOP.map}" target="_blank" rel="noopener" data-i18n="info.location.map"></a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 data-i18n="footer.contact"></h4>
-            <ul>
-              <li><a href="tel:${SHOP.phone1}">${SHOP.phone1}</a></li>
-              <li><a href="tel:${SHOP.phone2}">${SHOP.phone2}</a></li>
-              <li><a href="${SHOP.instagram}" target="_blank" rel="noopener">@dzlaptops</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <span>© <span id="year"></span> DZLaptops · <span data-i18n="footer.rights"></span></span>
-          <span>${ICON.pin} <span data-i18n="footer.made"></span></span>
-        </div>
-      </div>
-    </footer>`;
-  }
-
-  /* ---------- Reusable partials ---------- */
-  const perksGrid = `
-    <div class="grid grid-3">
-      ${[
-        ['shield', 'warranty'], ['clock', 'test'], ['truck', 'delivery'],
-        ['bag', 'handbag'], ['plug', 'charger'], ['sparkles', 'authentic'],
-      ].map(([icon, k]) => `
-      <article class="card perk reveal">
-        <div class="perk-icon" data-icon="${icon}"></div>
-        <h3 data-i18n="perk.${k}.t"></h3>
-        <p data-i18n="perk.${k}.d"></p>
-      </article>`).join('')}
-    </div>`;
-
-  const hoursCard = (titleKey) => `
-    <article class="card info-card reveal">
-      <div class="perk-icon" data-icon="clock"></div>
-      <h3 data-i18n="${titleKey}"></h3>
-      <div class="hours-row"><span class="day" data-i18n="info.hours.days"></span><span class="time" data-i18n="info.hours.time"></span></div>
-      <div class="hours-row"><span class="day" data-i18n="info.hours.friday"></span><span class="time badge-closed" data-i18n="info.hours.closed"></span></div>
-    </article>`;
-
-  const locationCard = (titleKey) => `
-    <article class="card info-card reveal">
-      <div class="perk-icon" data-icon="pin"></div>
-      <h3 data-i18n="${titleKey}"></h3>
-      <p style="font-size:1.15rem;font-weight:600;margin-bottom:6px;" data-i18n="info.location.city"></p>
-      <p class="muted" data-i18n="info.location.d"></p>
-      <a class="btn btn-ghost" style="margin-top:var(--space-4);" data-map>
-        <span data-icon="pin" class="inline-icon"></span><span data-i18n="info.location.map"></span>
-      </a>
-    </article>`;
-
-  const banner = `
-    <section><div class="container"><div class="banner reveal">
-      <h2 data-i18n="banner.title"></h2>
-      <p data-i18n="banner.sub"></p>
-      <div class="hero-cta">
-        <a class="btn btn-primary btn-lg" href="#contact" data-view="contact" data-i18n="banner.cta1"></a>
-        <a class="btn btn-ghost btn-lg" href="#categories" data-view="categories" data-i18n="banner.cta2"></a>
-      </div>
-    </div></div></section>`;
-
-  /* ---------- Views ---------- */
-  const VIEWS = {
-    home: `
-      <header class="hero">
-        <div class="container">
-          <p class="eyebrow" data-i18n="hero.eyebrow"></p>
-          <h1><span data-i18n="hero.title1"></span><br><span class="hero-gradient-text" data-i18n="hero.title2"></span></h1>
-          <p class="lead" data-i18n="hero.lead"></p>
-          <div class="hero-cta">
-            <a class="btn btn-primary btn-lg" href="#categories" data-view="categories" data-i18n="hero.cta1"></a>
-            <a class="btn btn-ghost btn-lg" href="#contact" data-view="contact" data-i18n="hero.cta2"></a>
-          </div>
-          <div class="hero-visual reveal" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>
-          </div>
-        </div>
-      </header>
-      <section><div class="container">
-        <div class="section-head reveal">
-          <p class="eyebrow" data-i18n="perks.eyebrow"></p>
-          <h2 data-i18n="perks.title"></h2>
-          <p data-i18n="perks.sub"></p>
-        </div>${perksGrid}
-      </div></section>
-      <section style="background:var(--bg-elevated);"><div class="container">
-        <div class="section-head reveal">
-          <p class="eyebrow" data-i18n="brands.eyebrow"></p>
-          <h2 data-i18n="brands.title"></h2>
-          <p data-i18n="brands.sub"></p>
-        </div>
-        <div class="brand-grid reveal" id="brandPreview"></div>
-        <div style="text-align:center;margin-top:var(--space-6);">
-          <a class="btn btn-primary" href="#categories" data-view="categories">
-            <span data-i18n="brands.viewall"></span><span data-icon="arrow" class="inline-icon"></span>
-          </a>
-        </div>
-      </div></section>
-      <section><div class="container">
-        <div class="section-head reveal"><p class="eyebrow" data-i18n="info.eyebrow"></p><h2 data-i18n="info.title"></h2></div>
-        <div class="info-grid">${hoursCard('info.hours.t')}${locationCard('info.location.t')}</div>
-      </div></section>
-      ${banner}`,
-
-    categories: `
-      <header class="page-header"><div class="container">
-        <p class="eyebrow" data-i18n="brands.eyebrow"></p>
-        <h1 data-i18n="cat.title"></h1>
-        <p data-i18n="cat.sub"></p>
-      </div></header>
-      <section style="padding-top:var(--space-4);"><div class="container">
-        <div class="brand-grid reveal" id="brandGrid"></div>
-        <p class="muted reveal" style="text-align:center;margin-top:var(--space-6);max-width:620px;margin-inline:auto;" data-i18n="cat.note"></p>
-        <div style="text-align:center;margin-top:var(--space-5);">
-          <a class="btn btn-primary" href="#contact" data-view="contact" data-i18n="hero.cta2"></a>
-        </div>
-      </div></section>
-      ${banner}`,
-
-    contact: `
-      <header class="page-header"><div class="container">
-        <p class="eyebrow" data-i18n="nav.contact"></p>
-        <h1 data-i18n="contact.title"></h1>
-        <p data-i18n="contact.sub"></p>
-      </div></header>
-      <section style="padding-top:var(--space-4);"><div class="container">
-        <div class="contact-grid reveal" id="contactGrid"></div>
-      </div></section>
-      <section style="background:var(--bg-elevated);"><div class="container">
-        <div class="info-grid">${locationCard('contact.visit.t')}${hoursCard('contact.hours.t')}</div>
-      </div></section>
-      <section><div class="container">
-        <div class="section-head reveal"><p class="eyebrow" data-i18n="perks.eyebrow"></p><h2 data-i18n="perks.title"></h2></div>
-        ${perksGrid}
-      </div></section>`,
-  };
-
-  /* ---------- Dynamic population ---------- */
-  function waLink(number, brand) {
-    const lang = document.documentElement.getAttribute('lang') || 'en';
-    const msg = {
-      en: brand ? `Hi DZLaptops, do you have ${brand} laptops available?` : 'Hi DZLaptops, I would like some information.',
-      fr: brand ? `Bonjour DZLaptops, avez-vous des PC portables ${brand} disponibles ?` : 'Bonjour DZLaptops, je souhaite quelques informations.',
-      ar: brand ? `مرحباً DZLaptops، هل تتوفر لديكم حواسيب ${brand}؟` : 'مرحباً DZLaptops، أرغب في بعض المعلومات.',
-    }[lang];
-    return `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
-  }
-
-  function brandCards(list) {
-    return list.map((b) => `
-      <a class="brand-card" href="${waLink(SHOP.wa1, b)}" target="_blank" rel="noopener" data-brand="${b}">
-        <div class="brand-logo">${ICON.laptop}</div>
-        <div class="brand-name">${b}</div>
-        <div class="brand-sub" data-i18n="brands.cta"></div>
-      </a>`).join('');
-  }
-
-  function populate(scope) {
-    scope.querySelectorAll('[data-icon]').forEach((el) => {
-      const n = el.getAttribute('data-icon');
-      if (ICON[n]) el.innerHTML = ICON[n];
-    });
-    scope.querySelectorAll('[data-map]').forEach((a) => {
-      a.setAttribute('href', SHOP.map); a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener');
-    });
-    const preview = scope.querySelector('#brandPreview');
-    if (preview) preview.innerHTML = brandCards(BRANDS.slice(0, 5));
-    const full = scope.querySelector('#brandGrid');
-    if (full) full.innerHTML = brandCards(BRANDS);
-    const cg = scope.querySelector('#contactGrid');
-    if (cg) {
-      const cards = [
-        { icon: 'phone', label: 'contact.phone1', value: SHOP.phone1, href: `tel:${SHOP.phone1}` },
-        { icon: 'phone', label: 'contact.phone2', value: SHOP.phone2, href: `tel:${SHOP.phone2}` },
-        { icon: 'whatsapp', label: 'contact.wa', value: SHOP.phone1, href: waLink(SHOP.wa1) },
-        { icon: 'whatsapp', label: 'contact.wa', value: SHOP.phone2, href: waLink(SHOP.wa2) },
-        { icon: 'instagram', label: 'contact.ig', value: '@dzlaptops', href: SHOP.instagram },
-        { icon: 'facebook', label: 'contact.fb', value: '@dzlaptops', href: SHOP.facebook },
-      ];
-      cg.innerHTML = cards.map((c) => `
-        <a class="card contact-card" href="${c.href}" ${c.href.startsWith('tel:') ? '' : 'target="_blank" rel="noopener"'}>
-          <div class="perk-icon">${ICON[c.icon]}</div>
-          <div class="c-body"><span class="c-label" data-i18n="${c.label}"></span><span class="c-value">${c.value}</span></div>
-        </a>`).join('');
-    }
-  }
-
-  /* ---------- Theme ---------- */
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     try { localStorage.setItem('dz-theme', theme); } catch (e) {}
-    const btn = document.getElementById('themeToggle');
-    if (btn) { btn.setAttribute('aria-pressed', theme === 'dark'); btn.innerHTML = theme === 'dark' ? ICON.sun : ICON.moon; }
+    var btn = document.getElementById('themeToggle');
+    if (btn) { btn.setAttribute('aria-pressed', theme === 'dark'); btn.innerHTML = theme === 'dark' ? SUN : MOON; }
   }
 
-  /* ---------- Router ---------- */
-  const META = { home: 'meta.home', categories: 'meta.categories', contact: 'meta.contact' };
+  /* Re-localize the prefilled WhatsApp messages when language changes */
+  function waMessage(lang, brand) {
+    return ({
+      en: brand ? 'Hi DZLaptops, do you have ' + brand + ' laptops available?' : 'Hi DZLaptops, I would like some information.',
+      fr: brand ? 'Bonjour DZLaptops, avez-vous des PC portables ' + brand + ' disponibles ?' : 'Bonjour DZLaptops, je souhaite quelques informations.',
+      ar: brand ? 'مرحباً DZLaptops، هل تتوفر لديكم حواسيب ' + brand + '؟' : 'مرحباً DZLaptops، أرغب في بعض المعلومات.',
+    })[lang];
+  }
+  function updateWaLinks(lang) {
+    document.querySelectorAll('a[href*="wa.me"]').forEach(function (a) {
+      var m = a.getAttribute('href').match(/wa\.me\/(\d+)/);
+      if (!m) return;
+      var brand = a.getAttribute('data-brand') || '';
+      a.setAttribute('href', 'https://wa.me/' + m[1] + '?text=' + encodeURIComponent(waMessage(lang, brand)));
+    });
+  }
+
   function currentView() {
-    const h = (location.hash || '#home').replace('#', '');
-    return VIEWS[h] ? h : 'home';
+    var h = (location.hash || '#home').replace('#', '');
+    return document.getElementById('view-' + h) ? h : 'home';
   }
   function showView(name) {
-    document.querySelectorAll('.view').forEach((v) => v.classList.toggle('active', v.id === 'view-' + name));
-    document.querySelectorAll('.nav-links a[data-view]').forEach((a) =>
-      a.classList.toggle('active', a.getAttribute('data-view') === name));
-    const active = document.getElementById('view-' + name);
+    var views = document.querySelectorAll('.view');
+    views.forEach(function (v) { v.classList.toggle('active', v.id === 'view-' + name); });
+    document.querySelectorAll('.nav-links a[data-view], .footer a[data-view]').forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('data-view') === name);
+    });
+    var active = document.getElementById('view-' + name);
     if (active) {
-      active.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
-      const dict = I18N[document.documentElement.getAttribute('lang') || 'en'];
+      active.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      var dict = I18N[document.documentElement.getAttribute('lang') || 'en'];
       if (dict && dict[META[name]]) document.title = dict[META[name]];
     }
     window.scrollTo(0, 0);
   }
 
-  /* ---------- Boot ---------- */
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('site-header').innerHTML = header();
-    const app = document.getElementById('app');
-    app.innerHTML = Object.keys(VIEWS)
-      .map((k) => `<section class="view" id="view-${k}">${VIEWS[k]}</section>`).join('');
-    document.getElementById('site-footer').innerHTML = footer();
-
-    populate(document);
-    const yr = document.getElementById('year');
-    if (yr) yr.textContent = new Date().getFullYear();
-
-    /* theme + language */
-    let theme;
+  document.addEventListener('DOMContentLoaded', function () {
+    /* theme */
+    var theme;
     try { theme = localStorage.getItem('dz-theme'); } catch (e) {}
     if (!theme) theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     applyTheme(theme);
-    initLang();
 
-    document.getElementById('themeToggle').addEventListener('click', () => {
+    /* language */
+    initLang();
+    updateWaLinks(document.documentElement.getAttribute('lang') || 'en');
+
+    var tt = document.getElementById('themeToggle');
+    if (tt) tt.addEventListener('click', function () {
       applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     });
-    document.getElementById('langSelect').addEventListener('change', (e) => {
+
+    var ls = document.getElementById('langSelect');
+    if (ls) ls.addEventListener('change', function (e) {
       applyLang(e.target.value);
-      populate(document);        // refresh WhatsApp prefills + icons for new language
-      applyLang(e.target.value); // re-apply text to freshly rendered nodes
+      updateWaLinks(e.target.value);
     });
 
     /* mobile menu */
-    const nav = document.getElementById('nav');
-    const mt = document.getElementById('menuToggle');
-    mt.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      mt.setAttribute('aria-expanded', open);
-    });
-    nav.querySelectorAll('.nav-links a').forEach((a) =>
-      a.addEventListener('click', () => { nav.classList.remove('open'); mt.setAttribute('aria-expanded', 'false'); }));
+    var nav = document.getElementById('nav');
+    var mt = document.getElementById('menuToggle');
+    if (nav && mt) {
+      mt.addEventListener('click', function () {
+        var open = nav.classList.toggle('open');
+        mt.setAttribute('aria-expanded', open);
+      });
+      nav.querySelectorAll('.nav-links a').forEach(function (a) {
+        a.addEventListener('click', function () { nav.classList.remove('open'); mt.setAttribute('aria-expanded', 'false'); });
+      });
+    }
 
-    /* router */
+    /* routing */
     showView(currentView());
-    window.addEventListener('hashchange', () => showView(currentView()));
+    window.addEventListener('hashchange', function () { showView(currentView()); });
   });
 })();
 
