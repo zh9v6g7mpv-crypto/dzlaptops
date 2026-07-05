@@ -44,10 +44,18 @@ function buildHeader(active) {
     `<a href="${page}"${active === key ? ' class="active"' : ''} data-i18n="nav.${key}">${label}</a>`;
 
   return `
+  <div class="topbar">
+    <div class="topbar-inner">
+      <span class="coords">DZLAPTOPS — ORAN, DZ · REV.2026</span>
+      <span class="status"><span class="led"></span>
+        <span data-i18n="status.open">Open</span> · 10:00–20:00 ·
+        <span data-i18n="info.hours.closed">Closed</span> <span data-i18n="info.hours.friday">Friday</span></span>
+    </div>
+  </div>
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="DZLaptops home">
-        ${ICON.laptop}<span>DZ<b>Laptops</b></span>
+        <span class="mark">${ICON.laptop}</span><span>DZ<b>Laptops</b></span>
       </a>
       <div class="nav-links">
         ${link('index.html', 'home', 'Home')}
@@ -61,13 +69,9 @@ function buildHeader(active) {
           <option value="ar">العربية</option>
         </select>
         <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false"
-          data-i18n-aria="nav.theme" aria-label="Toggle theme">
-          <span class="theme-sun">${ICON.sun}</span>
-        </button>
+          data-i18n-aria="nav.theme" aria-label="Toggle theme">${ICON.sun}</button>
         <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-expanded="false"
-          data-i18n-aria="nav.menu" aria-label="Menu">
-          ${ICON.menu}
-        </button>
+          data-i18n-aria="nav.menu" aria-label="Menu">${ICON.menu}</button>
       </div>
     </div>
   </nav>`;
@@ -79,7 +83,7 @@ function buildFooter() {
     <div class="container">
       <div class="footer-grid">
         <div>
-          <a class="brand" href="index.html">${ICON.laptop}<span>DZ<b>Laptops</b></span></a>
+          <a class="brand" href="index.html"><span class="mark">${ICON.laptop}</span><span>DZ<b>Laptops</b></span></a>
           <p data-i18n="footer.about">Premium laptops in Oran, Algeria.</p>
           <div class="socials">
             <a href="${SHOP.instagram}" target="_blank" rel="noopener" aria-label="Instagram">${ICON.instagram}</a>

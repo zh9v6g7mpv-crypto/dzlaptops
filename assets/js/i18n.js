@@ -83,6 +83,16 @@ const I18N = {
     'footer.follow': 'Follow us',
     'footer.rights': 'All rights reserved.',
     'footer.made': 'Oran, Algeria',
+
+    'label.included': 'Included',
+    'label.brands': 'Brands',
+    'label.showroom': 'Showroom',
+    'label.contact': 'Contact',
+    'status.open': 'Open',
+    'sk.warranty': 'Warranty', 'sk.test': 'Test period', 'sk.delivery': 'Delivery',
+    'sk.handbag': 'Carry bag', 'sk.charger': 'Charger', 'sk.authentic': 'Condition',
+    'sv.warranty': '3 Months', 'sv.test': '24 Hours', 'sv.delivery': 'Free',
+    'sv.handbag': 'Included', 'sv.charger': 'Original', 'sv.authentic': 'Genuine',
   },
 
   fr: {
@@ -166,6 +176,16 @@ const I18N = {
     'footer.follow': 'Suivez-nous',
     'footer.rights': 'Tous droits réservés.',
     'footer.made': 'Oran, Algérie',
+
+    'label.included': 'Inclus',
+    'label.brands': 'Marques',
+    'label.showroom': 'Magasin',
+    'label.contact': 'Contact',
+    'status.open': 'Ouvert',
+    'sk.warranty': 'Garantie', 'sk.test': 'Essai', 'sk.delivery': 'Livraison',
+    'sk.handbag': 'Sacoche', 'sk.charger': 'Chargeur', 'sk.authentic': 'État',
+    'sv.warranty': '3 Mois', 'sv.test': '24 Heures', 'sv.delivery': 'Gratuit',
+    'sv.handbag': 'Inclus', 'sv.charger': "D'origine", 'sv.authentic': 'Authentique',
   },
 
   ar: {
@@ -249,6 +269,16 @@ const I18N = {
     'footer.follow': 'تابعنا',
     'footer.rights': 'جميع الحقوق محفوظة.',
     'footer.made': 'وهران، الجزائر',
+
+    'label.included': 'مضمّن',
+    'label.brands': 'العلامات',
+    'label.showroom': 'المعرض',
+    'label.contact': 'اتصال',
+    'status.open': 'مفتوح',
+    'sk.warranty': 'الضمان', 'sk.test': 'التجربة', 'sk.delivery': 'التوصيل',
+    'sk.handbag': 'الحقيبة', 'sk.charger': 'الشاحن', 'sk.authentic': 'الحالة',
+    'sv.warranty': '٣ أشهر', 'sv.test': '٢٤ ساعة', 'sv.delivery': 'مجاني',
+    'sv.handbag': 'مضمّن', 'sv.charger': 'أصلي', 'sv.authentic': 'أصلي',
   },
 };
 

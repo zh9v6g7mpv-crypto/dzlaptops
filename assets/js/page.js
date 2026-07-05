@@ -28,15 +28,15 @@
     return `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
   }
 
-  /* Brand cards (preview = first 5, full = all) */
+  /* Brand parts-index cells (preview = first 5, full = all) */
   function renderBrands(container, list) {
     container.innerHTML = list
       .map(
         (b) => `
-      <a class="brand-card" href="${waLink(SHOP.wa1, b)}" target="_blank" rel="noopener" data-brand="${b}">
-        <div class="brand-logo">${ICON.laptop}</div>
-        <div class="brand-name">${b}</div>
-        <div class="brand-sub" data-i18n="brands.cta">Laptops</div>
+      <a class="index-cell" href="${waLink(SHOP.wa1, b)}" target="_blank" rel="noopener" data-brand="${b}">
+        <span class="bname">${b}</span>
+        <span class="idx" data-i18n="brands.cta">Laptops</span>
+        <span class="arrow">${ICON.arrow}</span>
       </a>`
       )
       .join('');
@@ -62,12 +62,12 @@
     contactGrid.innerHTML = cards
       .map(
         (c) => `
-      <a class="card contact-card" href="${c.href}" ${c.href.startsWith('tel:') ? '' : 'target="_blank" rel="noopener"'}>
-        <div class="perk-icon">${ICON[c.icon]}</div>
-        <div class="c-body">
-          <span class="c-label" data-i18n="${c.label}">${c.label}</span>
-          <span class="c-value">${c.value}</span>
-        </div>
+      <a class="channel" href="${c.href}" ${c.href.startsWith('tel:') ? '' : 'target="_blank" rel="noopener"'}>
+        <span class="cico">${ICON[c.icon]}</span>
+        <span class="c-body">
+          <span class="clabel" data-i18n="${c.label}">${c.label}</span>
+          <span class="cval">${c.value}</span>
+        </span>
       </a>`
       )
       .join('');
