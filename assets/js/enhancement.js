@@ -53,6 +53,9 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    var yr = document.getElementById('year');
+    if (yr) yr.textContent = new Date().getFullYear();
+
     /* theme */
     var theme;
     try { theme = localStorage.getItem('dz-theme'); } catch (e) {}
