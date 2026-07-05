@@ -37,6 +37,7 @@ const ICON = {
   instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
   facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
 };
 
 function buildHeader(active) {
@@ -44,14 +45,6 @@ function buildHeader(active) {
     `<a href="${page}"${active === key ? ' class="active"' : ''} data-i18n="nav.${key}">${label}</a>`;
 
   return `
-  <div class="topbar">
-    <div class="topbar-inner">
-      <span class="coords">DZLAPTOPS — ORAN, DZ · REV.2026</span>
-      <span class="status"><span class="led"></span>
-        <span data-i18n="status.open">Open</span> · 10:00–20:00 ·
-        <span data-i18n="info.hours.closed">Closed</span> <span data-i18n="info.hours.friday">Friday</span></span>
-    </div>
-  </div>
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="DZLaptops home">

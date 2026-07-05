@@ -19,9 +19,7 @@ function applyTheme(theme) {
 function initTheme() {
   let theme;
   try { theme = localStorage.getItem('dz-theme'); } catch (e) {}
-  if (!theme) {
-    theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
+  if (!theme) theme = 'dark';
   applyTheme(theme);
 }
 

@@ -33,10 +33,9 @@
     container.innerHTML = list
       .map(
         (b) => `
-      <a class="index-cell" href="${waLink(SHOP.wa1, b)}" target="_blank" rel="noopener" data-brand="${b}">
+      <a class="brand-tile" href="${waLink(SHOP.wa1, b)}" target="_blank" rel="noopener" data-brand="${b}">
         <span class="bname">${b}</span>
-        <span class="idx" data-i18n="brands.cta">Laptops</span>
-        <span class="arrow">${ICON.arrow}</span>
+        <span class="bsub" data-i18n="brands.cta">Laptops</span>
       </a>`
       )
       .join('');
