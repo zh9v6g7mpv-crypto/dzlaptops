@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DZLaptops — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --blue:#1B4DFF; --bg:#EDEFF5; --surface:#fff; --surface-2:#F2F3F7;
+    --text:#0A0E1A; --dim:#5A6180; --border:rgba(10,14,26,.12);
+    --red:#E8342B; --green:#0EA45A; --amber:#C77700;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;
+    --display:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;letter-spacing:-.014em;line-height:1.47}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px}
+
+  header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+  .hd{max-width:1100px;margin:0 auto;padding:16px 22px;display:flex;align-items:center;
+    justify-content:space-between;gap:14px}
+  .logo{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.035em}
+  .logo .dz{color:var(--blue)}
+  .hd-right{display:flex;align-items:center;gap:10px}
+  .who{font-size:13px;color:var(--dim)}
+
+  button{font-family:var(--sans);cursor:pointer;border:none;font-weight:600;letter-spacing:-.01em}
+  .btn{background:var(--blue);color:#fff;border-radius:100px;padding:10px 18px;font-size:14px;
+    transition:.18s;box-shadow:0 6px 16px rgba(27,77,255,.24)}
+  .btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .btn.ghost{background:transparent;color:var(--text);border:1.5px solid var(--border);box-shadow:none}
+  .btn.ghost:hover{border-color:var(--blue);color:var(--blue)}
+  .btn.sm{padding:7px 13px;font-size:13px;box-shadow:none}
+  .btn.danger{background:var(--red)}
+
+  /* login */
+  .login{max-width:380px;margin:14vh auto;background:var(--surface);border:1px solid var(--border);
+    border-radius:20px;padding:34px}
+  .login h1{font-family:var(--display);font-size:26px;font-weight:680;letter-spacing:-.03em;margin-bottom:6px}
+  .login p{color:var(--dim);font-size:14px;margin-bottom:22px}
+  label{display:block;font-size:12px;font-weight:600;color:var(--dim);margin-bottom:6px;
+    text-transform:uppercase;letter-spacing:.06em}
+  input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:11px;
+    background:var(--surface);color:var(--text);font-family:var(--sans);font-size:14px;margin-bottom:14px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue)}
+  .err{color:var(--red);font-size:13px;margin-bottom:12px;min-height:18px}
+
+  /* toolbar */
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin:26px 0 16px;flex-wrap:wrap}
+  .tabs{display:flex;gap:6px;background:var(--surface);padding:5px;border-radius:100px;
+    border:1px solid var(--border)}
+  .tab{background:transparent;color:var(--dim);border-radius:100px;padding:8px 15px;font-size:13.5px}
+  .tab.on{background:var(--blue);color:#fff}
+  .count{font-family:var(--mono);font-size:12px;color:var(--dim)}
+
+  .note{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--blue);
+    border-radius:12px;padding:14px 16px;font-size:13.5px;color:var(--dim);margin-bottom:16px}
+
+  /* rows */
+  .list{display:flex;flex-direction:column;gap:12px;padding-bottom:70px}
+  .row{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+  .row.review{border-color:rgba(199,119,0,.5)}
+  .rhead{display:grid;grid-template-columns:64px 1fr auto auto;gap:16px;align-items:center;padding:16px}
+  .thumb{width:64px;height:64px;border-radius:12px;object-fit:cover;background:var(--surface-2);
+    display:flex;align-items:center;justify-content:center;font-family:var(--display);
+    font-weight:700;color:var(--blue);font-size:22px}
+  .rmain{min-width:0}
+  .rtitle{font-size:16px;font-weight:600;letter-spacing:-.02em;margin-bottom:5px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-family:var(--mono);font-size:11px;color:var(--dim);background:var(--surface-2);
+    padding:3px 8px;border-radius:6px}
+  .rprice{text-align:right;white-space:nowrap}
+  .rprice .amt{font-size:18px;font-weight:680;letter-spacing:-.02em}
+  .rprice .was{font-family:var(--mono);font-size:12px;color:var(--dim);
+    text-decoration:line-through;display:block}
+  .rprice .cur{font-family:var(--mono);font-size:10px;color:var(--dim)}
+  .tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;margin-top:5px}
+  .tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    padding:3px 8px;border-radius:100px}
+  .tag.new{background:var(--blue);color:#fff}
+  .tag.sale{background:var(--red);color:#fff}
+  .tag.pub{background:rgba(14,164,90,.14);color:var(--green)}
+  .tag.draft{background:var(--surface-2);color:var(--dim)}
+  .tag.warn{background:rgba(199,119,0,.14);color:var(--amber)}
+  .ract{display:flex;gap:7px;align-items:center}
+
+  .warnbox{background:rgba(199,119,0,.08);border-top:1px solid rgba(199,119,0,.25);
+    padding:9px 16px;font-size:12.5px;color:var(--amber)}
+
+  /* editor */
+  .edit{border-top:1px solid var(--border);padding:18px 16px;background:var(--surface-2);display:none}
+  .edit.open{display:block}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 14px}
+  .grid .full{grid-column:1/-1}
+  .specrow{display:flex;gap:8px;margin-bottom:8px}
+  .specrow input{margin-bottom:0}
+  .eact{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+  .hint{font-size:12px;color:var(--dim);margin:-8px 0 14px}
+  details.raw{margin-top:8px}
+  details.raw summary{font-size:12.5px;color:var(--dim);cursor:pointer;margin-bottom:8px}
+  details.raw pre{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:12px;font-family:var(--mono);font-size:11.5px;white-space:pre-wrap;
+    max-height:260px;overflow:auto;color:var(--dim)}
+
+  .empty{text-align:center;padding:70px 20px;color:var(--dim)}
+  /* modal */
+  .modal{position:fixed;inset:0;z-index:200;background:rgba(10,14,26,.55);
+    backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+    display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;
+    opacity:0;pointer-events:none;transition:opacity .22s}
+  .modal.open{opacity:1;pointer-events:auto}
+  .sheet{background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    width:100%;max-width:640px;padding:28px;position:relative;margin:auto 0;
+    transform:translateY(14px) scale(.98);transition:transform .28s cubic-bezier(.2,.9,.25,1);
+    box-shadow:0 40px 100px rgba(10,14,26,.4)}
+  .modal.open .sheet{transform:none}
+  .sheet .x{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-size:13px}
+  .sheet h2{font-family:var(--display);font-size:23px;font-weight:680;letter-spacing:-.03em;margin-bottom:5px}
+  .sheet .sub{color:var(--dim);font-size:14px;margin-bottom:20px}
+  .sheet textarea{font-family:var(--mono);font-size:12.5px;line-height:1.55;resize:vertical}
+  .pv-title{font-size:13.5px;font-weight:600;color:var(--dim);margin-bottom:12px;
+    padding-top:16px;border-top:1px solid var(--border)}
+  .pvw{background:rgba(199,119,0,.09);border:1px solid rgba(199,119,0,.3);border-radius:10px;
+    padding:10px 13px;font-size:12.5px;color:var(--amber);margin-bottom:14px}
+  .pvok{background:rgba(14,164,90,.09);border:1px solid rgba(14,164,90,.3);border-radius:10px;
+    padding:10px 13px;font-size:12.5px;color:var(--green);margin-bottom:14px}
+
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--text);
+    color:#fff;padding:12px 20px;border-radius:100px;font-size:14px;font-weight:600;
+    box-shadow:0 14px 34px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:100}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+  .spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.35);
+    border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:6px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  @media(max-width:760px){
+    .rhead{grid-template-columns:52px 1fr;gap:12px}
+    .rprice,.ract{grid-column:2;justify-self:start;text-align:left}
+    .tags{justify-content:flex-start}
+    .grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login" class="login">
+  <h1><span style="color:var(--blue)">DZ</span>Laptops Admin</h1>
+  <p>Sign in to manage the catalogue.</p>
+  <label>Email</label>
+  <input id="email" type="email" autocomplete="username" placeholder="you@example.com">
+  <label>Password</label>
+  <input id="pass" type="password" autocomplete="current-password" placeholder="••••••••">
+  <div class="err" id="loginErr"></div>
+  <button class="btn" style="width:100%" onclick="signIn()">Sign in</button>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+  <header>
+    <div class="hd">
+      <div class="logo"><span class="dz">DZ</span>Laptops <span style="color:var(--dim);font-weight:500;font-size:14px">Admin</span></div>
+      <div class="hd-right">
+        <span class="who" id="who"></span>
+        <button class="btn" onclick="openAdd()">+ Add laptop</button>
+        <button class="btn ghost" id="syncBtn" onclick="sync()">Sync from Instagram</button>
+        <button class="btn ghost sm" onclick="signOut()">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="note" id="syncNote" style="display:none"></div>
+
+    <div class="bar">
+      <div class="tabs">
+        <button class="tab on"  data-f="review"    onclick="setFilter('review')">Needs review</button>
+        <button class="tab"     data-f="draft"     onclick="setFilter('draft')">Drafts</button>
+        <button class="tab"     data-f="published" onclick="setFilter('published')">Published</button>
+        <button class="tab"     data-f="all"       onclick="setFilter('all')">All</button>
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<!-- ADD LAPTOP (paste caption) -->
+<div class="modal" id="addModal" onclick="if(event.target===this)closeAdd()">
+  <div class="sheet">
+    <button class="x" onclick="closeAdd()">✕</button>
+    <h2>Add a laptop</h2>
+    <p class="sub">Copy the caption from your Instagram post and paste it below. It'll fill everything in for you.</p>
+
+    <label>Instagram caption</label>
+    <textarea id="capIn" rows="9" placeholder="💻 HP EliteBook 1040 G11 x360&#10;&#10;✅ Processeur : Intel Core Ultra 7 155H&#10;✅ Mémoire : 32 Go&#10;✅ Stockage : SSD 256 Go&#10;✅ Écran : 14&quot; 2.8K OLED&#10;&#10;💰 Prix : 175000 DA"></textarea>
+
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="btn" onclick="doParse()">Read caption</button>
+      <button class="btn ghost" onclick="document.getElementById('capIn').value='';document.getElementById('preview').style.display='none'">Clear</button>
+    </div>
+
+    <div id="preview" style="display:none">
+      <div class="pv-title">Check this looks right — edit anything that's wrong.</div>
+      <div id="pvWarn"></div>
+
+      <div class="grid">
+        <div>
+          <label>Brand</label>
+          <select id="p-brand"></select>
+        </div>
+        <div style="grid-column:span 2">
+          <label>Model</label>
+          <input id="p-model">
+        </div>
+        <div>
+          <label>Price (DA)</label>
+          <input id="p-price" type="number">
+        </div>
+        <div>
+          <label>Was / original (DA)</label>
+          <input id="p-was" type="number" placeholder="only if on sale">
+        </div>
+        <div>
+          <label>New arrival?</label>
+          <div style="padding:10px 0">
+            <label style="display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
+              <input type="checkbox" id="p-new" checked style="width:auto;margin:0"> Mark as New
+            </label>
+          </div>
+        </div>
+        <div class="full">
+          <label>Card specs (the 4 chips on the card)</label>
+          <div class="specrow">
+            <input id="p-s0" placeholder="Screen">
+            <input id="p-s1" placeholder="CPU">
+            <input id="p-s2" placeholder="RAM">
+            <input id="p-s3" placeholder="Storage">
+          </div>
+        </div>
+      </div>
+
+      <details class="raw"><summary id="fsCount">Full specs found</summary><pre id="pvFull"></pre></details>
+
+      <div class="eact" style="margin-top:14px">
+        <button class="btn ghost" onclick="saveNew(false)">Save as draft</button>
+        <button class="btn" onclick="saveNew(true)">Save &amp; publish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ====== CONFIG — fill these in ======
+const SUPABASE_URL  = "https://ayaemwiradsxegvnefne.supabase.co";
+const SUPABASE_ANON = "sb_publishable_oWDazfX7EJsRCxKmww-s_w_CQuCGfiE";
+// ====================================
+
+if (typeof supabase === "undefined") {
+  document.body.innerHTML =
+    '<div style="max-width:420px;margin:18vh auto;text-align:center;font-family:system-ui;padding:24px">' +
+    '<h2 style="margin-bottom:10px">Couldn\'t load</h2>' +
+    '<p style="color:#5A6180;font-size:14px">The page couldn\'t reach the Supabase library. ' +
+    'Check your connection and reload.</p></div>';
+  throw new Error("supabase-js failed to load");
+}
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const BRANDS = ["Lenovo","HP","Dell","Asus","Huawei","MacBook","Microsoft","Samsung","MSI","Acer","Others"];
+
+let rows = [], filter = "review", session = null;
+
+/* ---------- auth ---------- */
+async function signIn(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("pass").value;
+  const err = document.getElementById("loginErr");
+  err.textContent = "";
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { err.textContent = error.message; return; }
+  session = data.session;
+  await boot();
+}
+async function signOut(){ await sb.auth.signOut(); location.reload(); }
+
+async function boot(){
+  const { data } = await sb.auth.getSession();
+  session = data.session;
+  if (!session) return;
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  document.getElementById("who").textContent = session.user.email;
+  await load();
+}
+
+/* ---------- data ---------- */
+async function load(){
+  const { data, error } = await sb.from("laptops").select("*")
+    .order("needs_review", { ascending:false })
+    .order("posted_at", { ascending:false });
+  if (error) { toast("Load failed: " + error.message); return; }
+  rows = data || [];
+  draw();
+}
+
+function setFilter(f){
+  filter = f;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on", t.dataset.f===f));
+  draw();
+}
+
+function visible(){
+  if (filter==="review")    return rows.filter(r=>r.needs_review);
+  if (filter==="draft")     return rows.filter(r=>!r.published);
+  if (filter==="published") return rows.filter(r=>r.published);
+  return rows;
+}
+
+/* ---------- render ---------- */
+function esc(s){ return (s??"").toString()
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function money(n){ return n==null ? "—" : n.toLocaleString("fr-DZ").replace(/\u202f|\u00a0/g," "); }
+
+function draw(){
+  const items = visible();
+  document.getElementById("count").textContent =
+    `${items.length} of ${rows.length} · ${rows.filter(r=>r.needs_review).length} need review`;
+
+  const box = document.getElementById("list");
+  if (!items.length){
+    box.innerHTML = `<div class="empty">Nothing here.<br><small>Hit “Sync from Instagram” to pull in your posts.</small></div>`;
+    return;
+  }
+
+  box.innerHTML = items.map(r=>{
+    const onSale = r.was_price != null && r.price != null && r.was_price > r.price;
+    const chips = (r.card_specs||[]).map(s=>`<span class="chip">${esc(s)}</span>`).join("");
+    const warns = (r.warnings||[]);
+    const img = r.image_url
+      ? `<img class="thumb" src="${esc(r.image_url)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'thumb',textContent:'${esc((r.brand||'?')[0])}'}))">`
+      : `<div class="thumb">${esc((r.brand||"?")[0])}</div>`;
+
+    return `
+    <div class="row ${r.needs_review?'review':''}" id="row-${r.id}">
+      <div class="rhead">
+        ${img}
+        <div class="rmain">
+          <div class="rtitle">${esc(r.brand)} ${esc(r.model)}</div>
+          <div class="chips">${chips || '<span class="chip">no specs parsed</span>'}</div>
+        </div>
+        <div class="rprice">
+          ${onSale ? `<span class="was">${money(r.was_price)}</span>` : ``}
+          <span class="amt">${money(r.price)}</span> <span class="cur">DA</span>
+          <div class="tags">
+            ${r.is_new?'<span class="tag new">New</span>':''}
+            ${onSale?'<span class="tag sale">Sale</span>':''}
+            ${r.published?'<span class="tag pub">Live</span>':'<span class="tag draft">Draft</span>'}
+            ${warns.length?'<span class="tag warn">'+warns.length+'</span>':''}
+          </div>
+        </div>
+        <div class="ract">
+          <button class="btn ghost sm" onclick="toggleEdit('${r.id}')">Edit</button>
+          <button class="btn sm ${r.published?'danger':''}" onclick="togglePublish('${r.id}')">
+            ${r.published?'Unpublish':'Publish'}
+          </button>
+        </div>
+      </div>
+
+      ${warns.length ? `<div class="warnbox">⚠ ${warns.map(esc).join(" · ")}</div>` : ``}
+
+      <div class="edit" id="edit-${r.id}">
+        <div class="grid">
+          <div>
+            <label>Brand</label>
+            <select id="f-brand-${r.id}">
+              ${BRANDS.map(b=>`<option ${b===r.brand?'selected':''}>${b}</option>`).join("")}
+            </select>
+          </div>
+          <div class="full" style="grid-column:span 2">
+            <label>Model</label>
+            <input id="f-model-${r.id}" value="${esc(r.model)}">
+          </div>
+
+          <div>
+            <label>Price (DA)</label>
+            <input id="f-price-${r.id}" type="number" value="${r.price ?? ""}">
+          </div>
+          <div>
+            <label>Was / original (DA)</label>
+            <input id="f-was-${r.id}" type="number" value="${r.was_price ?? ""}" placeholder="leave empty = not on sale">
+          </div>
+          <div>
+            <label>Flags</label>
+            <div style="display:flex;gap:14px;align-items:center;padding:10px 0">
+              <label style="display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
+                <input type="checkbox" id="f-new-${r.id}" ${r.is_new?'checked':''} style="width:auto;margin:0"> New
+              </label>
+            </div>
+          </div>
+
+          <div class="full">
+            <label>Card specs (4 chips shown on the card)</label>
+            <div class="specrow">
+              ${[0,1,2,3].map(i=>`<input id="f-s${i}-${r.id}" value="${esc((r.card_specs||[])[i]||"")}" placeholder="${['Screen','CPU','RAM','Storage'][i]}">`).join("")}
+            </div>
+            <div class="hint">Everything else (ports, battery, OS…) is kept and shown when a customer taps the card.</div>
+          </div>
+        </div>
+
+        <details class="raw">
+          <summary>Original caption &amp; full specs</summary>
+          <pre>${esc(JSON.stringify(r.full_specs||{}, null, 2))}</pre>
+          <pre>${esc(r.raw_caption||"—")}</pre>
+        </details>
+
+        <div class="eact">
+          <button class="btn ghost sm" onclick="toggleEdit('${r.id}')">Cancel</button>
+          <button class="btn sm" onclick="save('${r.id}')">Save</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function toggleEdit(id){ document.getElementById("edit-"+id).classList.toggle("open"); }
+
+/* ---------- mutations ---------- */
+async function save(id){
+  const v = s => document.getElementById(`f-${s}-${id}`);
+  const specs = [0,1,2,3].map(i=>v("s"+i).value.trim()).filter(Boolean);
+  const price = v("price").value === "" ? null : parseInt(v("price").value,10);
+  const was   = v("was").value   === "" ? null : parseInt(v("was").value,10);
+
+  const patch = {
+    brand: v("brand").value,
+    model: v("model").value.trim(),
+    price,
+    was_price: was,
+    card_specs: specs,
+    is_new: v("new").checked,
+    needs_review: false,           // you've looked at it
+    warnings: [],
+  };
+
+  const { error } = await sb.from("laptops").update(patch).eq("id", id);
+  if (error) { toast("Save failed: " + error.message); return; }
+  toast("Saved");
+  await load();
+}
+
+async function togglePublish(id){
+  const r = rows.find(x=>x.id===id);
+  if (!r) return;
+  if (!r.published && (r.price==null || !r.model)){
+    toast("Add a price and model before publishing"); return;
+  }
+  const { error } = await sb.from("laptops")
+    .update({ published: !r.published, needs_review: false }).eq("id", id);
+  if (error) { toast("Failed: " + error.message); return; }
+  toast(r.published ? "Unpublished" : "Published — it’s live on the site");
+  await load();
+}
+
+/* ---------- sync ---------- */
+async function sync(){
+  const btn = document.getElementById("syncBtn");
+  const note = document.getElementById("syncNote");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Syncing…';
+  note.style.display = "block";
+  note.textContent = "Fetching your last 6 months of posts from Instagram…";
+
+  try{
+    const { data, error } = await sb.functions.invoke("sync-instagram");
+    if (error) throw error;
+    if (data && data.ok === false) throw new Error(data.error || "Sync failed");
+
+    note.textContent =
+      `Done — ${data.fetched} posts checked · ${data.inserted} new laptops added · ` +
+      `${data.updated} refreshed · ${data.skipped} skipped (not product posts). ` +
+      `New items land in “Needs review” as drafts — nothing goes live until you publish it.`;
+    toast(`${data.inserted} new laptops imported`);
+    setFilter("review");
+    await load();
+  }catch(e){
+    note.textContent = "Sync failed: " + (e.message || e);
+    toast("Sync failed");
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "Sync from Instagram";
+  }
+}
+
+/* ---------- misc ---------- */
+let tt;
+function toast(msg){
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("show");
+  clearTimeout(tt); tt = setTimeout(()=>el.classList.remove("show"), 2600);
+}
+
+
+
+/* ================= ADD LAPTOP (paste a caption) ================= */
+/**
+ * DZLaptops caption parser
+ * Turns an Instagram/Facebook caption into structured laptop data.
+ *
+ * Designed against the real @dzlaptops caption format:
+ *   💻 HP EliteBook 1040 G11 x360 (2-en-1 OLED)
+ *   ...prose...
+ *   ✅ Processeur : Intel® Core™ Ultra 7 155H (...)
+ *   ✅ Mémoire : 32 Go LPDDR5X
+ *   ✅ Stockage : SSD NVMe PCIe 4.0 – 256 Go
+ *   ✅ Écran : 14” 2.8K (2880 × 1800) OLED Tactile, 120 Hz
+ *   💰 Prix : 175000 DA
+ */
+
+const PARSER_BRANDS = [
+  "Lenovo", "HP", "Dell", "Asus", "Huawei", "MacBook",
+  "Microsoft", "Samsung", "MSI", "Acer",
+];
+
+// alternate spellings -> canonical brand
+const BRAND_ALIASES = {
+  "apple": "MacBook",
+  "macbook": "MacBook",
+  "mac book": "MacBook",
+  "hewlett": "HP",
+  "hp": "HP",
+  "lenovo": "Lenovo",
+  "thinkpad": "Lenovo",
+  "ideapad": "Lenovo",
+  "legion": "Lenovo",
+  "dell": "Dell",
+  "latitude": "Dell",
+  "inspiron": "Dell",
+  "asus": "Asus",
+  "zenbook": "Asus",
+  "vivobook": "Asus",
+  "rog": "Asus",
+  "huawei": "Huawei",
+  "matebook": "Huawei",
+  "microsoft": "Microsoft",
+  "surface": "Microsoft",
+  "samsung": "Samsung",
+  "galaxy book": "Samsung",
+  "msi": "MSI",
+  "acer": "Acer",
+  "aspire": "Acer",
+  "predator": "Acer",
+  "nitro": "Acer",
+};
+
+/** normalise unicode junk: ® ™ curly quotes, weird dashes, nbsp */
+function clean(s) {
+  return (s || "")
+    .replace(/[®™©]/g, "")
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2013\u2014\u2212]/g, "-")   // – — −  ->  -
+    .replace(/[\u00A0\u202F\u200E\u200F]/g, " ") // nbsp, narrow nbsp, LTR/RTL marks
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Pull the value after a "Label : value" spec line, matching any of the given label variants */
+function specLine(caption, labels) {
+  const lines = caption.split(/\r?\n/);
+  for (const raw of lines) {
+    const line = clean(raw);
+    // strip a leading emoji/bullet (✅ ▪️ • - etc.)
+    const body = line.replace(/^[^\p{L}\p{N}]+/u, "");
+    for (const label of labels) {
+      // label followed by : or ： (allow accents/case differences)
+      const re = new RegExp("^" + label + "\\s*[:：]\\s*(.+)$", "iu");
+      const m = body.match(re);
+      if (m) return clean(m[1]);
+    }
+  }
+  return null;
+}
+
+/** BRAND + MODEL from the first meaningful line (the 💻 title line) */
+function parseTitle(caption) {
+  const lines = caption.split(/\r?\n/).map(clean).filter(Boolean);
+  if (!lines.length) return { brand: null, model: null, title: null };
+
+  // title = first line; drop leading emoji
+  let title = lines[0].replace(/^[^\p{L}\p{N}]+/u, "").trim();
+
+  // find brand by alias anywhere in the title (longest alias first)
+  const lower = title.toLowerCase();
+  let brand = null;
+  const aliases = Object.keys(BRAND_ALIASES).sort((a, b) => b.length - a.length);
+  for (const a of aliases) {
+    if (lower.includes(a)) { brand = BRAND_ALIASES[a]; break; }
+  }
+
+  // model = title minus the brand word itself (if the brand name literally appears)
+  let model = title;
+  if (brand) {
+    const re = new RegExp("\\b" + brand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "i");
+    model = title.replace(re, "").trim();
+    // also strip a leading alias like "Apple"
+    model = model.replace(/^(apple|hewlett[- ]?packard)\s*/i, "").trim();
+  }
+  model = model.replace(/^[-–—:·]\s*/, "").trim();
+
+  return { brand: brand || "Others", model: model || title, title };
+}
+
+/** PRICE: "💰 Prix : 175000 DA" / "Prix: 175.000 da" / "175 000 DA" */
+function parsePrice(caption) {
+  const labelled = specLine(caption, ["prix", "price", "السعر", "prix de vente"]);
+  const src = labelled || caption;
+
+  // grab a number that looks like a DZD price: 4-7 digits, optional . , or space separators
+  const m = src.match(/(\d{1,3}(?:[ .,\u00A0]\d{3})+|\d{4,7})\s*(?:da|dz|dzd|دج)?\b/i);
+  if (!m) return { price: null, priceRaw: null };
+
+  const digits = m[1].replace(/[ .,\u00A0]/g, "");
+  const n = parseInt(digits, 10);
+  if (!Number.isFinite(n) || n < 1000 || n > 9999999) return { price: null, priceRaw: m[1] };
+
+  return { price: n, priceRaw: m[1] };
+}
+
+/** condense a long CPU string to something card-sized */
+function shortCpu(cpu) {
+  if (!cpu) return null;
+  let c = clean(cpu)
+    .replace(/\(.*?\)/g, "")           // drop "(16 Cœurs / 22 Threads ...)"
+    .replace(/\bIntel\b|\bAMD\b/gi, (x) => x)
+    .trim();
+  // "Intel Core Ultra 7 155H" / "Core i7-1355U" / "Ryzen 7 7730U" / "Apple M3 Pro"
+  const m = c.match(/((?:Intel\s+)?Core\s+(?:Ultra\s+)?[a-z0-9\- ]+?|Ryzen\s+\d[^,]*|Apple\s+M\d[a-z ]*|Snapdragon[^,]*)(?:,|$)/i);
+  let out = m ? m[1] : c;
+  out = out.replace(/\s+/g, " ").trim().replace(/[-–—,]$/, "").trim();
+  // keep it short
+  if (out.length > 34) out = out.slice(0, 34).trim();
+  return out || null;
+}
+
+/** RAM: "32 Go LPDDR5X" -> "32 Go" */
+function shortRam(ram) {
+  if (!ram) return null;
+  const m = clean(ram).match(/(\d+)\s*(go|gb|جيجا)/i);
+  return m ? `${m[1]} ${/gb/i.test(m[2]) ? "GB" : "Go"}` : clean(ram).slice(0, 20);
+}
+
+/** STORAGE: "SSD NVMe PCIe 4.0 - 256 Go" -> "256 Go SSD" */
+function shortStorage(st) {
+  if (!st) return null;
+  const s = clean(st);
+  const cap = s.match(/(\d+)\s*(to|tb)\b/i)
+    ? s.match(/(\d+)\s*(to|tb)\b/i)[1] + " TB"
+    : (s.match(/(\d+)\s*(go|gb)\b/i) ? s.match(/(\d+)\s*(go|gb)\b/i)[1] + " Go" : null);
+  const kind = /nvme|ssd/i.test(s) ? "SSD" : (/hdd/i.test(s) ? "HDD" : "");
+  if (!cap) return s.slice(0, 22);
+  return kind ? `${cap} ${kind}` : cap;
+}
+
+/** SCREEN: '14" 2.8K (2880 x 1800) OLED Tactile, 120 Hz, 16:10' -> '14" 2.8K OLED' */
+function shortScreen(sc) {
+  if (!sc) return null;
+  const s = clean(sc).replace(/\(.*?\)/g, "").trim();
+  const size = s.match(/(\d{2}(?:[.,]\d)?)\s*["”'′]?/);
+  const res = s.match(/\b(\d\.?\d?K|FHD|QHD|UHD|WUXGA|WQXGA|4K|2K|3K|Retina)\b/i);
+  const panel = s.match(/\b(OLED|AMOLED|IPS|LCD|Mini-?LED|XDR)\b/i);
+  const touch = /tactile|touch|لمس/i.test(s) ? "Tactile" : null;
+  const hz = s.match(/(\d{2,3})\s*hz/i);
+
+  const parts = [];
+  if (size) parts.push(`${size[1]}"`);
+  if (res) parts.push(res[1].toUpperCase());
+  if (panel) parts.push(panel[1].toUpperCase());
+  if (!panel && touch) parts.push(touch);
+  if (!res && !panel && hz) parts.push(`${hz[1]}Hz`);
+
+  const out = parts.join(" ").trim();
+  return out || s.slice(0, 22);
+}
+
+/**
+ * Main entry: caption -> laptop object
+ * Returns { ok, brand, model, price, cardSpecs[4], fullSpecs{}, warnings[] }
+ */
+function parseCaption(caption) {
+  const warnings = [];
+  const raw = caption || "";
+
+  const { brand, model, title } = parseTitle(raw);
+  if (brand === "Others") warnings.push("Brand not recognised — filed under Others");
+  if (!model) warnings.push("Could not read a model name");
+
+  const { price, priceRaw } = parsePrice(raw);
+  if (price == null) warnings.push("Could not read a price");
+
+  // full spec map — every ✅ line we understand
+  const fullSpecs = {
+    cpu:        specLine(raw, ["processeur", "processor", "cpu", "المعالج"]),
+    gpu:        specLine(raw, ["carte graphique", "graphics", "gpu", "بطاقة الرسومات"]),
+    ram:        specLine(raw, ["m[ée]moire", "ram", "الذاكرة"]),
+    storage:    specLine(raw, ["stockage", "storage", "disque", "التخزين"]),
+    screen:     specLine(raw, ["[ée]cran", "screen", "display", "الشاشة"]),
+    design:     specLine(raw, ["design", "châssis", "chassis"]),
+    connectivity: specLine(raw, ["connectivit[ée]", "connectivity", "sans[- ]fil"]),
+    ports:      specLine(raw, ["ports", "connectique"]),
+    keyboard:   specLine(raw, ["clavier", "keyboard"]),
+    webcam:     specLine(raw, ["webcam", "cam[ée]ra"]),
+    security:   specLine(raw, ["s[ée]curit[ée]", "security"]),
+    battery:    specLine(raw, ["batterie", "battery", "autonomie"]),
+    os:         specLine(raw, ["syst[eè]me", "os", "operating system"]),
+  };
+  // drop empties
+  Object.keys(fullSpecs).forEach(k => { if (!fullSpecs[k]) delete fullSpecs[k]; });
+
+  // the 4 chips shown on the card
+  const cardSpecs = [
+    shortScreen(fullSpecs.screen),
+    shortCpu(fullSpecs.cpu),
+    shortRam(fullSpecs.ram),
+    shortStorage(fullSpecs.storage),
+  ].filter(Boolean);
+
+  if (cardSpecs.length < 4) warnings.push(`Only ${cardSpecs.length}/4 card specs found`);
+
+  return {
+    ok: !!(model && price != null),
+    brand,
+    model,
+    title,
+    price,
+    priceRaw,
+    cardSpecs,
+    fullSpecs,
+    warnings,
+  };
+}
+
+let parsed = null;
+
+function openAdd(){
+  document.getElementById("addModal").classList.add("open");
+  document.body.style.overflow="hidden";
+  const sel=document.getElementById("p-brand");
+  sel.innerHTML = BRANDS.map(b=>`<option>${b}</option>`).join("");
+  document.getElementById("capIn").value="";
+  document.getElementById("preview").style.display="none";
+  parsed=null;
+}
+function closeAdd(){
+  document.getElementById("addModal").classList.remove("open");
+  document.body.style.overflow="";
+}
+
+function doParse(){
+  const cap = document.getElementById("capIn").value.trim();
+  if(!cap){ toast("Paste a caption first"); return; }
+
+  const p = parseCaption(cap);
+  parsed = { p, cap };
+
+  document.getElementById("p-brand").value = BRANDS.includes(p.brand) ? p.brand : "Others";
+  document.getElementById("p-model").value = p.model || "";
+  document.getElementById("p-price").value = p.price ?? "";
+  document.getElementById("p-was").value   = "";
+  document.getElementById("p-new").checked = true;
+  for(let i=0;i<4;i++) document.getElementById("p-s"+i).value = (p.cardSpecs||[])[i] || "";
+
+  const w = document.getElementById("pvWarn");
+  if(p.warnings.length){
+    w.innerHTML = `<div class="pvw">⚠ ${p.warnings.map(esc).join(" · ")}<br><small>Fix these below before saving.</small></div>`;
+  }else{
+    w.innerHTML = `<div class="pvok">✓ Read the caption cleanly — nothing missing.</div>`;
+  }
+
+  const keys = Object.keys(p.fullSpecs||{});
+  document.getElementById("fsCount").textContent = `Full specs found (${keys.length}) — shown when a customer taps the card`;
+  document.getElementById("pvFull").textContent = JSON.stringify(p.fullSpecs||{}, null, 2);
+
+  document.getElementById("preview").style.display="block";
+}
+
+async function saveNew(publish){
+  if(!parsed){ toast("Read the caption first"); return; }
+  const g = id => document.getElementById(id).value.trim();
+
+  const model = g("p-model");
+  const price = g("p-price")==="" ? null : parseInt(g("p-price"),10);
+  const was   = g("p-was")==="" ? null : parseInt(g("p-was"),10);
+
+  if(!model){ toast("Add a model name"); return; }
+  if(publish && price==null){ toast("Add a price before publishing"); return; }
+
+  const specs=[0,1,2,3].map(i=>g("p-s"+i)).filter(Boolean);
+
+  const row = {
+    source: "manual",
+    brand: g("p-brand"),
+    model,
+    price,
+    was_price: was,
+    card_specs: specs,
+    full_specs: parsed.p.fullSpecs || {},
+    raw_caption: parsed.cap,
+    is_new: document.getElementById("p-new").checked,
+    published: !!publish,
+    needs_review: false,
+    warnings: [],
+    posted_at: new Date().toISOString(),
+  };
+
+  const { error } = await sb.from("laptops").insert(row);
+  if(error){ toast("Save failed: " + error.message); return; }
+
+  toast(publish ? "Published — it's live on the site" : "Saved as draft");
+  closeAdd();
+  setFilter(publish ? "published" : "draft");
+  await load();
+}
+
+sb.auth.getSession().then(({data})=>{ if (data.session) boot(); });
+</script>
+</body>
+</html>
