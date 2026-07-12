@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>DZLaptops — Oran</title>
+<script>
+  // Decide theme and paint it BEFORE the browser renders anything.
+  // We inject a <style> so html AND body get the right background on the
+  // very first paint — no dependence on later JS or CSS-variable timing.
+  (function(){
+    var t="light";
+    try{ var s=localStorage.getItem("dz-theme"); if(s==="light"||s==="dark") t=s; }catch(e){}
+    var bg = t==="dark" ? "#0A0E1A" : "#EDEFF5";
+    var fg = t==="dark" ? "#F2F3F7" : "#0A0E1A";
+    var r=document.documentElement;
+    r.setAttribute("data-theme",t);
+    r.style.colorScheme=t;
+    // Hard-set the theme colors as inline styles on <html>. Inline styles on the
+    // root persist no matter what and are what the body/header ultimately sit on.
+    r.style.background=bg;
+    // A style element enforces body colors on the very first paint. We keep a
+    // transition lock only briefly, then release it — but we NEVER remove the
+    // color rules, so the theme can't fall back to an undefined value.
+    var st=document.createElement("style");
+    st.id="pre-theme";
+    st.textContent=
+      "html[data-theme='"+t+"'],html[data-theme='"+t+"'] body{background:"+bg+" !important}"+
+      "html[data-theme='"+t+"'] body{color:"+fg+" !important}"+
+      "html.lock-tr,html.lock-tr *{transition:none !important}";
+    (document.head||r).appendChild(st);
+    r.className=(r.className+" lock-tr").trim();
+    // In-app browsers often throttle/break CSS animations, leaving content stuck
+    // faded out. Disable entrance animations there so headings stay visible.
+    try{
+      var ua=navigator.userAgent||"";
+      if(/Instagram|FBAN|FBAV|FB_IAB|Messenger|TikTok|Line|Snapchat|Twitter|Pinterest/i.test(ua)){
+        r.className=(r.className+" no-anim").trim();
+      }
+    }catch(e){}
+    // release only the transition lock after load (keep the color rules forever)
+    window.addEventListener("load",function(){
+      setTimeout(function(){ r.className=r.className.replace(/\block-tr\b/,"").trim(); },80);
+    });
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..600&family=Inter+Tight:wght@500;600;700;800&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme:light dark;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,"Segoe UI",Roboto,sans-serif;
+    --display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter Tight","Inter",system-ui,sans-serif;
+    --sans-ar:"SF Arabic","Cairo",-apple-system,sans-serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,"Roboto Mono",monospace;
+    --blue:#1B4DFF;
+    --blue-bright:#4DA6FF;
+    --navy:#0A0E1A;
+    --navy-2:#111832;
+    --cream:#F2F3F7;
+    --ink:#0A0E1A;
+    --radius:22px;
+    /* DEFAULT THEME = LIGHT. These fallbacks guarantee the theme is never
+       "undefined" even if the data-theme attribute fails to match. */
+    --bg:#EDEFF5;
+    --bg-panel:#0A0E1A;
+    --bg-panel-ink:#F2F3F7;
+    --surface:#FFFFFF;
+    --surface-2:#F2F3F7;
+    --text:#0A0E1A;
+    --text-dim:#5A6180;
+    --text-on-panel:#F2F3F7;
+    --text-on-panel-dim:#9BA3BD;
+    --border:rgba(10,14,26,.12);
+    --border-panel:rgba(242,243,247,.14);
+    --accent:#1B4DFF;
+    --accent-solid:#1B4DFF;
+    --marquee-bg:#1B4DFF;
+    --pill-border:rgba(10,14,26,.30);
+  }
+  /* ---------- THEME TOKENS ---------- */
+  [data-theme="dark"]{
+    --bg:#0A0E1A;
+    --bg-panel:#F2F3F7;
+    --bg-panel-ink:#0A0E1A;
+    --surface:#111832;
+    --surface-2:#0E1428;
+    --text:#F2F3F7;
+    --text-dim:#8B93AD;
+    --text-on-panel:#0A0E1A;
+    --text-on-panel-dim:#5A6180;
+    --border:rgba(242,243,247,.10);
+    --border-panel:rgba(10,14,26,.12);
+    --accent:#3D6BFF;
+    --accent-solid:#1B4DFF;
+    --marquee-bg:#0A0E1A;
+    --pill-border:rgba(242,243,247,.28);
+  }
+  [data-theme="light"]{
+    --bg:#EDEFF5;
+    --bg-panel:#0A0E1A;
+    --bg-panel-ink:#F2F3F7;
+    --surface:#FFFFFF;
+    --surface-2:#F2F3F7;
+    --text:#0A0E1A;
+    --text-dim:#5A6180;
+    --text-on-panel:#F2F3F7;
+    --text-on-panel-dim:#9BA3BD;
+    --border:rgba(10,14,26,.12);
+    --border-panel:rgba(242,243,247,.14);
+    --accent:#1B4DFF;
+    --accent-solid:#1B4DFF;
+    --marquee-bg:#1B4DFF;
+    --pill-border:rgba(10,14,26,.30);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.47;
+    letter-spacing:-.014em;
+    font-feature-settings:"kern","liga","calt";
+    font-optical-sizing:auto;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+    transition:background .4s ease,color .4s ease;
+  }
+  [dir="rtl"] body{font-family:var(--sans-ar)}
+  /* Display: SF Pro Display — refined weight, tight optical tracking */
+  .display{
+    font-family:var(--display);
+    font-weight:700;
+    letter-spacing:-.032em;
+    line-height:1.02;
+    text-transform:uppercase;
+    font-optical-sizing:auto;
+    font-feature-settings:"kern","liga";
+  }
+  [dir="rtl"] .display{font-family:var(--sans-ar);font-weight:800;letter-spacing:0;line-height:1.15;text-transform:none}
+  .mono{font-family:var(--mono);font-feature-settings:"tnum","zero"}
+  [dir="rtl"] .mono{font-family:var(--mono)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  /* ---------- NAV BAR ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:100;
+    background:var(--bg);
+    border-bottom:1px solid var(--border);
+    transition:background .4s ease;
+  }
+  .nav{
+    max-width:1400px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;gap:20px;
+  }
+  .brand{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:22px;letter-spacing:-.035em;
+    display:flex;align-items:center;gap:8px;cursor:pointer;
+  }
+  .brand .dz{color:var(--accent-solid)}
+  .brand .reg{
+    font-size:10px;border:1.5px solid var(--accent-solid);color:var(--accent-solid);
+    border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-weight:500;
+  }
+  .nav-links{display:flex;gap:6px;align-items:center}
+  .nav-links a{
+    padding:9px 16px;border-radius:100px;font-size:14px;font-weight:500;
+    letter-spacing:-.01em;color:var(--text-dim);transition:.2s;position:relative;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.active{color:var(--text)}
+  .nav-links a.active::after{
+    content:"";position:absolute;left:16px;right:16px;bottom:2px;height:2.5px;
+    background:var(--accent-solid);border-radius:2px;
+  }
+  .nav-tools{display:flex;gap:8px;align-items:center}
+
+  /* ---------- MENU BUTTON + DROPDOWN ---------- */
+  .menu-wrap{position:relative}
+  .menu-btn{
+    display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+    background:var(--accent-solid);color:#fff;border:none;border-radius:100px;
+    padding:9px 16px 9px 13px;font-family:var(--sans);font-size:14px;font-weight:600;
+    letter-spacing:-.01em;transition:transform .2s,box-shadow .2s,filter .2s;
+    box-shadow:0 6px 16px rgba(27,77,255,.26);
+  }
+  .menu-btn:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(27,77,255,.34);filter:brightness(1.05)}
+  .menu-ico{display:inline-flex;flex-direction:column;justify-content:center;gap:3.5px;width:16px;height:14px}
+  .menu-ico i{display:block;height:2px;width:16px;background:#fff;border-radius:2px;
+    transition:transform .32s cubic-bezier(.6,.1,.2,1),opacity .2s}
+  .menu-btn.open .menu-ico i:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
+  .menu-btn.open .menu-ico i:nth-child(2){opacity:0;transform:scaleX(.4)}
+  .menu-btn.open .menu-ico i:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
+  .menu-label{font-weight:600}
+
+  .menu-drop{
+    position:absolute;top:52px;right:0;min-width:250px;z-index:300;
+    background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:8px;
+    box-shadow:0 24px 60px rgba(10,14,26,.28);
+    transform-origin:top right;
+    opacity:0;transform:translateY(-10px) scale(.96);pointer-events:none;
+    transition:opacity .22s ease,transform .28s cubic-bezier(.2,.9,.25,1);
+  }
+  [dir="rtl"] .menu-drop{right:auto;left:0;transform-origin:top left}
+  .menu-drop.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+  .menu-item{
+    display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+    background:transparent;border:none;cursor:pointer;padding:11px 12px;border-radius:12px;
+    color:var(--text);font-family:var(--sans);transition:background .16s;
+    opacity:0;transform:translateY(8px);
+  }
+  [dir="rtl"] .menu-item{text-align:right}
+  .menu-drop.open .menu-item{opacity:1;transform:translateY(0);
+    transition:opacity .3s ease,transform .34s cubic-bezier(.2,.9,.25,1),background .16s}
+  .menu-drop.open .menu-item:nth-child(1){transition-delay:.04s}
+  .menu-drop.open .menu-item:nth-child(2){transition-delay:.09s}
+  .menu-drop.open .menu-item:nth-child(3){transition-delay:.14s}
+  .menu-drop.open .menu-item:nth-child(4){transition-delay:.19s}
+  .menu-item:hover{background:var(--surface-2)}
+  .mi-ico{
+    width:38px;height:38px;flex:none;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    background:rgba(27,77,255,.12);color:var(--accent-solid);
+  }
+  .mi-ico svg{width:19px;height:19px}
+  .menu-item:hover .mi-ico{background:var(--accent-solid);color:#fff}
+  .mi-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .mi-text b{font-size:14.5px;font-weight:600;letter-spacing:-.015em}
+  .mi-text small{font-size:12px;color:var(--text-dim);letter-spacing:-.01em}
+  .icon-btn{
+    width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+    background:transparent;color:var(--text);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;
+    font-weight:600;
+  }
+  .icon-btn:hover{background:var(--accent-solid);color:#fff;border-color:var(--accent-solid)}
+  .lang-btn{width:auto;padding:0 14px;gap:6px;font-family:var(--sans);font-weight:600;font-size:12px;letter-spacing:.02em;text-transform:uppercase}
+  .lang-menu{position:relative}
+  .lang-drop{
+    position:absolute;top:46px;right:0;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px;padding:6px;min-width:150px;
+    box-shadow:0 20px 50px rgba(0,0,0,.3);display:none;flex-direction:column;gap:2px;z-index:200;
+  }
+  [dir="rtl"] .lang-drop{right:auto;left:0}
+  .lang-drop.open{display:flex}
+  .lang-drop button{
+    background:transparent;border:none;color:var(--text);text-align:left;
+    padding:10px 12px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:500;
+    display:flex;justify-content:space-between;align-items:center;font-family:inherit;
+  }
+  [dir="rtl"] .lang-drop button{text-align:right}
+  .lang-drop button:hover{background:var(--accent-solid);color:#fff}
+  .lang-drop button .code{font-family:var(--mono);opacity:.55;font-size:11px}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{
+    background:var(--marquee-bg);color:#F2F3F7;overflow:hidden;
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    padding:14px 0;
+  }
+  [data-theme="light"] .marquee{color:#fff}
+  .marquee-track{display:flex;white-space:nowrap;width:max-content;animation:scroll 32s linear infinite}
+  [dir="rtl"] .marquee-track{animation-direction:reverse}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marquee-item{
+    font-family:var(--display);font-weight:640;
+    font-size:22px;text-transform:uppercase;letter-spacing:-.02em;
+    display:flex;align-items:center;gap:22px;padding:0 22px;
+  }
+  [dir="rtl"] .marquee-item{font-family:var(--sans-ar);font-weight:700;letter-spacing:0}
+  .marquee-dot{width:26px;height:12px;background:var(--blue-bright);border-radius:2px;display:inline-block;flex:none}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* ---------- LAYOUT ---------- */
+  .page{max-width:1400px;margin:0 auto;padding:0 28px}
+  .view{display:none}
+  .view.active{display:block;opacity:1;animation:fade .5s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  /* Safety: if animations are throttled/broken (some in-app browsers),
+     force full visibility so headings can never get stuck faded out. */
+  @media(prefers-reduced-motion:reduce){.view.active{animation:none}}
+  .no-anim .view.active{animation:none !important;opacity:1 !important;transform:none !important}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:70px 0 40px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;
+  }
+  .hero h1{font-size:clamp(46px,8vw,102px);font-weight:680;letter-spacing:-.043em;line-height:.98}
+  .hero h1 .hl{color:var(--accent-solid)}
+  .globe{
+    display:inline-flex;width:.85em;height:.85em;border:.09em solid currentColor;border-radius:50%;
+    position:relative;vertical-align:baseline;margin-left:.1em;
+  }
+  .globe::before,.globe::after{content:"";position:absolute;inset:0;border-radius:50%;border:.05em solid currentColor}
+  .globe::before{transform:scaleX(.5)}
+  .globe::after{border:none;border-top:.05em solid currentColor;top:50%}
+  .hero-sub{
+    margin-top:30px;display:flex;flex-direction:column;align-items:flex-start;
+    gap:18px;max-width:460px;
+  }
+  .hero-sub p{
+    font-size:19px;color:var(--text);line-height:1.4;max-width:420px;
+    letter-spacing:-.02em;font-weight:500;
+  }
+  .info-btn{
+    display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+    background:var(--accent-solid);color:#fff;border:none;
+    padding:11px 18px 11px 15px;border-radius:100px;
+    font-family:var(--sans);font-size:14.5px;font-weight:600;letter-spacing:-.01em;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,filter .2s;
+    box-shadow:0 6px 18px rgba(27,77,255,.28);
+  }
+  .info-btn svg{width:19px;height:19px;flex:none}
+  .info-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(27,77,255,.36);filter:brightness(1.06)}
+  .info-btn:active{transform:translateY(0)}
+  [dir="rtl"] .info-btn{padding:11px 15px 11px 18px}
+  .hero-tag{margin-top:22px;font-size:15px;color:var(--text-dim);max-width:430px;line-height:1.58;letter-spacing:-.012em}
+
+  .hero-card{
+    background:linear-gradient(165deg,#141B33,#0A0E1A);color:#F2F3F7;border-radius:var(--radius);
+    padding:34px;position:relative;overflow:hidden;min-height:420px;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    border:1px solid rgba(27,77,255,.28);
+    box-shadow:0 30px 80px rgba(27,77,255,.18);cursor:pointer;
+    transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s;
+  }
+  .hero-card:hover{transform:translateY(-4px);box-shadow:0 40px 90px rgba(27,77,255,.28)}
+  .hero-card .edition{
+    font-family:var(--sans);color:var(--blue-bright);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;
+    margin-bottom:auto;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;
+    border:1px solid rgba(77,166,255,.45);border-radius:100px;padding:7px 14px;
+  }
+  .hero-card:hover .edition{background:var(--accent-solid);color:#fff;border-color:var(--accent-solid)}
+  .hero-card .laptop-visual{
+    position:absolute;top:5%;right:-4%;width:75%;height:60%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  [dir="rtl"] .hero-card .laptop-visual{right:auto;left:-4%}
+  .hero-card h2{font-size:clamp(30px,4vw,43px);font-weight:680;line-height:1.0;color:#F2F3F7;letter-spacing:-.035em}
+  .hero-card h2 .thin{color:#6E77A0}
+
+  /* laptop SVG shell */
+  .laptop-svg{width:100%;filter:drop-shadow(0 20px 30px rgba(27,77,255,.35))}
+
+  /* ---------- FEATURE STRIP (info) — floaty, no boxes ---------- */
+  .features{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:44px 40px;margin:44px 0 96px;
+  }
+  .feat{display:flex;gap:16px;align-items:flex-start}
+  .feat-ico{
+    width:38px;height:38px;flex:none;color:var(--accent-solid);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .feat-ico svg{width:100%;height:100%;stroke:currentColor;stroke-width:1.6;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+  .feat-body{padding-top:2px}
+  .feat h4{font-size:16px;font-weight:600;margin-bottom:5px;letter-spacing:-.018em}
+  .feat p{font-size:14px;color:var(--text-dim);line-height:1.5;max-width:34ch;letter-spacing:-.011em}
+
+  /* ---------- SECTION HEAD ---------- */
+  .sec-head{
+    display:flex;align-items:flex-start;gap:14px;margin-bottom:8px;
+  }
+  .sec-eyebrow{
+    font-family:var(--sans);font-weight:590;font-size:12px;color:var(--accent-solid);
+    text-transform:uppercase;letter-spacing:.08em;padding-top:12px;
+  }
+  .sec-title{font-size:clamp(38px,6vw,80px);font-weight:680;color:var(--text);letter-spacing:-.038em;line-height:1.0}
+  .clover{color:var(--accent-solid);font-size:.7em;vertical-align:middle;margin:0 .12em}
+  .csym{
+    display:inline-flex;width:.55em;height:.55em;border:.07em solid var(--accent-solid);color:var(--accent-solid);
+    border-radius:50%;align-items:center;justify-content:center;font-size:.6em;vertical-align:super;
+    font-family:var(--sans);font-weight:600;
+  }
+  .sec-desc{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin:18px 0 40px;
+    padding-bottom:26px;border-bottom:1px solid var(--border);}
+  .sec-desc p{font-size:15px;color:var(--text-dim);letter-spacing:-.012em;line-height:1.5}
+
+  /* ---------- CATEGORY GRID ---------- */
+  .cat-intro{padding:60px 0 0}
+  .cat-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:10px 0 80px;
+  }
+  .cat-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:26px 24px;min-height:210px;display:flex;flex-direction:column;justify-content:space-between;
+    cursor:pointer;transition:.28s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;
+  }
+  .cat-card::before{
+    content:"";position:absolute;inset:0;background:var(--accent-solid);
+    transform:translateY(101%);transition:.35s cubic-bezier(.2,.8,.2,1);z-index:0;
+  }
+  .cat-card:hover{border-color:var(--accent-solid);transform:translateY(-4px)}
+  .cat-card:hover::before{transform:translateY(0)}
+  .cat-card:hover *{color:#fff;position:relative;z-index:1}
+  .cat-card:hover .cat-num,.cat-card:hover .cat-arrow{color:#fff}
+  .cat-num{font-family:var(--mono);font-size:13px;color:var(--text-dim);position:relative;z-index:1}
+  .cat-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+  .cat-ico{
+    width:30px;height:30px;color:var(--accent-solid);position:relative;z-index:1;transition:color .28s;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .cat-ico svg{width:100%;height:100%;stroke:currentColor;stroke-width:1.6;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+  .cat-card:hover .cat-ico{color:#fff}
+  .cat-card.usecase .cat-name{font-size:clamp(21px,2.4vw,28px);line-height:1.1}
+  .cat-logo{
+    width:26px;height:26px;object-fit:contain;position:relative;z-index:1;
+    opacity:.75;transition:filter .28s,opacity .28s;
+  }
+  [data-theme="dark"] .cat-logo{filter:invert(1) brightness(1.6)}   /* dark bg -> light logo */
+  .cat-card:hover .cat-logo{filter:brightness(0) invert(1);opacity:1} /* blue fill -> white logo */
+  .cat-name{font-size:clamp(26px,3vw,36px);font-weight:680;position:relative;z-index:1;letter-spacing:-.035em}
+  .cat-foot{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+  .cat-tag{font-family:var(--sans);font-weight:500;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
+  .cat-arrow{font-size:20px;color:var(--accent-solid);transition:.2s}
+  [dir="rtl"] .cat-arrow{transform:scaleX(-1)}
+
+  /* ---------- BRAND DETAIL ---------- */
+  .back-link{
+    display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;
+    font-size:13px;color:var(--text-dim);cursor:pointer;transition:.2s;text-transform:uppercase;letter-spacing:.05em;
+  }
+  .back-link:hover{color:var(--accent-solid)}
+  .back-arrow{font-size:16px}
+  [dir="rtl"] .back-arrow{transform:scaleX(-1)}
+  /* all-laptops filter bar */
+  .filter-bar{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 26px}
+  .filter-chip{
+    border:1.5px solid var(--pill-border);border-radius:100px;padding:9px 17px;
+    font-family:var(--sans);font-size:13.5px;font-weight:550;color:var(--text);
+    background:var(--surface);cursor:pointer;transition:.18s;white-space:nowrap;letter-spacing:-.01em;
+  }
+  .filter-chip:hover{border-color:var(--accent-solid);color:var(--accent-solid)}
+  .filter-chip.on{background:var(--accent-solid);border-color:var(--accent-solid);color:#fff}
+  .laptop-list{display:flex;flex-direction:column;gap:14px;padding:4px 0 90px}
+  .laptop-card{
+    display:grid;grid-template-columns:auto 1fr auto auto;gap:26px;align-items:center;
+    padding:24px 28px;border-radius:18px;background:var(--surface);
+    border:1px solid var(--border);transition:.22s cubic-bezier(.2,.8,.2,1);cursor:pointer;
+  }
+  .laptop-card:hover{border-color:var(--accent-solid);transform:translateY(-3px);
+    box-shadow:0 18px 44px rgba(27,77,255,.14)}
+  .lc-mark{
+    width:52px;height:52px;flex:none;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    background:var(--accent-solid);color:#fff;font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.03em;
+  }
+  .lc-img{width:26px;height:26px;object-fit:contain;display:block}
+  .lc-txt{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.03em}
+  .lc-main{min-width:0}
+  .lc-model{font-size:18px;font-weight:590;letter-spacing:-.018em;margin-bottom:6px}
+  .lc-spec{display:flex;flex-wrap:wrap;gap:8px}
+  .lc-spec span{
+    font-family:var(--mono);font-size:11.5px;color:var(--text-dim);
+    background:var(--surface-2);padding:4px 9px;border-radius:6px;white-space:nowrap;
+  }
+  .lc-price{text-align:right;white-space:nowrap}
+  [dir="rtl"] .lc-price{text-align:left}
+  .lc-price .amt{font-size:20px;font-weight:680;letter-spacing:-.02em}
+  .lc-price .was{font-family:var(--mono);font-size:12px;color:var(--text-dim);text-decoration:line-through;
+    display:block;margin-bottom:1px;opacity:.8}
+  .lc-price .cur{font-family:var(--mono);font-size:11px;color:var(--text-dim);display:block;margin-top:2px}
+  .lc-tags{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+  [dir="rtl"] .lc-tags{align-items:flex-start}
+  .lc-tag{
+    font-family:var(--sans);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+    padding:6px 12px;border-radius:100px;white-space:nowrap;
+  }
+  .lc-tag.stock{background:rgba(27,77,255,.12);color:var(--accent);border:1px solid rgba(27,77,255,.28)}
+  .lc-tag.new{background:var(--accent-solid);color:#fff}
+  .lc-tag.sale{background:#E8342B;color:#fff}
+  @media(max-width:720px){
+    .laptop-card{grid-template-columns:auto 1fr;gap:16px 14px;padding:20px}
+    .lc-price{grid-column:2;text-align:left}
+    [dir="rtl"] .lc-price{text-align:right}
+    .lc-tags{grid-column:1/-1;flex-direction:row;align-items:center;justify-self:start}
+    [dir="rtl"] .lc-tags{justify-self:end}
+  }
+
+  /* ---------- DETAIL SHEET ---------- */
+  .ds-backdrop{
+    position:fixed;inset:0;z-index:400;background:rgba(10,14,26,.55);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;padding:22px;
+    opacity:0;pointer-events:none;transition:opacity .25s ease;
+  }
+  .ds-backdrop.open{opacity:1;pointer-events:auto}
+  .ds-panel{
+    background:var(--surface);border:1px solid var(--border);border-radius:22px;
+    width:100%;max-width:560px;max-height:86vh;overflow-y:auto;padding:28px;position:relative;
+    transform:translateY(16px) scale(.97);transition:transform .3s cubic-bezier(.2,.9,.25,1);
+    box-shadow:0 40px 100px rgba(10,14,26,.4);
+  }
+  .ds-backdrop.open .ds-panel{transform:translateY(0) scale(1)}
+  .ds-close{
+    position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:.18s;
+  }
+  [dir="rtl"] .ds-close{right:auto;left:16px}
+  .ds-close:hover{background:var(--accent-solid);color:#fff;border-color:var(--accent-solid)}
+  .ds-img{width:100%;border-radius:14px;margin-bottom:20px;max-height:260px;object-fit:cover}
+  .ds-head{display:flex;gap:14px;align-items:center;margin-bottom:16px;padding-right:40px}
+  [dir="rtl"] .ds-head{padding-right:0;padding-left:40px}
+  .ds-mark{
+    width:50px;height:50px;flex:none;border-radius:13px;background:var(--accent-solid);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--display);font-weight:700;font-size:20px;
+  }
+  .ds-img{width:25px;height:25px;object-fit:contain;display:block}
+  .ds-txt{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.03em}
+  .ds-brand{font-family:var(--mono);font-size:12px;color:var(--accent-solid);
+    text-transform:uppercase;letter-spacing:.08em}
+  .ds-model{font-size:21px;font-weight:640;letter-spacing:-.025em;line-height:1.25}
+  .ds-price{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+  .ds-amt{font-size:28px;font-weight:700;letter-spacing:-.03em}
+  .ds-was{font-family:var(--mono);font-size:15px;color:var(--text-dim);text-decoration:line-through}
+  .ds-cur{font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+  .ds-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
+  .ds-specs{border-top:1px solid var(--border);margin-bottom:22px}
+  .ds-row{display:grid;grid-template-columns:130px 1fr;gap:14px;padding:12px 0;
+    border-bottom:1px solid var(--border);font-size:14px}
+  .ds-k{font-family:var(--mono);font-size:11.5px;color:var(--text-dim);
+    text-transform:uppercase;letter-spacing:.05em;padding-top:2px}
+  .ds-v{color:var(--text);line-height:1.5;letter-spacing:-.01em}
+  .ds-wa{
+    display:block;text-align:center;background:var(--accent-solid);color:#fff;
+    border-radius:100px;padding:14px;font-weight:600;font-size:15px;letter-spacing:-.01em;
+    box-shadow:0 8px 22px rgba(27,77,255,.3);transition:.18s;
+  }
+  .ds-wa:hover{filter:brightness(1.08);transform:translateY(-2px)}
+  .ds-link{display:block;text-align:center;color:var(--text-dim);font-size:13px;
+    margin-top:12px;font-weight:500}
+  .ds-link:hover{color:var(--accent-solid)}
+  @media(max-width:560px){
+    .ds-panel{padding:22px;border-radius:20px;max-height:90vh}
+    .ds-row{grid-template-columns:1fr;gap:3px;padding:11px 0}
+    .ds-amt{font-size:24px}
+  }
+
+  /* ---------- POLICY GRID ---------- */
+  .policy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:4px 0 90px}
+  .policy-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:26px;
+    display:flex;gap:16px;align-items:flex-start;
+  }
+  .policy-card .pc-ico{
+    width:44px;height:44px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    background:rgba(27,77,255,.12);color:var(--accent-solid);
+  }
+  .policy-card .pc-ico svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.6;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+  .pc-body h4{font-size:17px;font-weight:600;letter-spacing:-.02em;margin-bottom:5px}
+  .pc-body p{font-size:14px;color:var(--text-dim);line-height:1.55;letter-spacing:-.01em}
+  .policy-card.wide{grid-column:1/-1}
+  .policy-card.wide .pc-map{margin-top:6px}
+  .pc-map-link{color:var(--accent-solid);font-weight:600;font-size:14px;display:inline-flex;gap:6px;margin-top:8px}
+  @media(max-width:720px){.policy-grid{grid-template-columns:1fr}}
+
+  /* pill tags row — brand quick-links */
+  .pills{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 40px}
+  .pill{
+    border:1.5px solid var(--pill-border);border-radius:100px;padding:10px 20px;
+    font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;cursor:pointer;
+    transition:.18s;background:var(--surface);letter-spacing:-.01em;
+  }
+  .pill:hover{background:var(--accent-solid);border-color:var(--accent-solid);color:#fff;transform:translateY(-2px)}
+  .pill.solid{background:var(--accent-solid);border-color:var(--accent-solid);color:#fff}
+  .pill.solid:hover{filter:brightness(1.1)}
+
+  /* ---------- CONTACT ---------- */
+  .contact-wrap{padding:60px 0 80px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .contact-block{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:34px;
+  }
+  .contact-block.dark{
+    background:linear-gradient(160deg,var(--accent-solid),#0F35C4);
+    color:#fff;border-color:transparent;
+  }
+  .contact-block.dark .cb-label{color:rgba(255,255,255,.7)}
+  .contact-block.dark .cb-sub{color:rgba(255,255,255,.75)}
+  .contact-block.dark .phone-num{color:#fff}
+  .contact-block.dark .wa-btn{background:#fff;color:var(--accent-solid)}
+  .contact-block.dark .wa-btn:hover{background:rgba(255,255,255,.9)}
+  .cb-label{font-family:var(--sans);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent-solid);margin-bottom:18px}
+  .cb-title{font-size:clamp(28px,3.4vw,42px);font-weight:680;margin-bottom:8px;letter-spacing:-.035em}
+  .cb-sub{font-size:14.5px;color:var(--text-dim);margin-bottom:24px;line-height:1.6;letter-spacing:-.006em}
+  .phone-row{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:16px 0;border-top:1px solid var(--border);
+  }
+  .contact-block.dark .phone-row{border-color:rgba(255,255,255,.22)}
+  .phone-row:last-child{border-bottom:1px solid var(--border)}
+  .contact-block.dark .phone-row:last-child{border-color:rgba(255,255,255,.22)}
+  .phone-num{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:.01em;font-feature-settings:"tnum"}
+  .wa-btn{
+    background:var(--accent-solid);color:#fff;border-radius:100px;padding:9px 18px;
+    font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:.2s;white-space:nowrap;
+  }
+  .wa-btn:hover{filter:brightness(1.12)}
+  .social-row{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+  .social-chip{
+    border:1px solid var(--border);border-radius:100px;padding:11px 20px;font-size:14px;font-weight:600;
+    display:inline-flex;align-items:center;gap:9px;transition:.2s;
+  }
+  .contact-block.dark .social-chip{border-color:rgba(255,255,255,.35);color:#fff}
+  .contact-block.dark .social-chip:hover{background:#fff;color:var(--accent-solid);border-color:#fff}
+  .social-chip:hover{background:var(--accent-solid);color:#fff;border-color:var(--accent-solid)}
+  .hours-list{margin-top:10px}
+  .hours-row{display:flex;justify-content:space-between;padding:14px 0;border-top:1px solid var(--border);font-size:15px}
+  .hours-row:first-child{border-top:none}
+  .hours-row .day{font-weight:600}
+  .hours-row .time{font-family:var(--mono);color:var(--text-dim);font-feature-settings:"tnum"}
+  .hours-row.closed .time{color:var(--accent-solid);font-weight:600}
+  .map-embed{margin-top:22px;border-radius:16px;overflow:hidden;border:1px solid var(--border);height:220px;position:relative}
+  .map-embed iframe{width:100%;height:100%;border:0;filter:grayscale(.2)}
+  .map-fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:var(--surface-2);gap:10px;text-align:center;padding:20px;
+  }
+  .map-pin{font-size:34px}
+  .map-link{color:var(--accent-solid);font-weight:600;font-size:14px;display:inline-flex;gap:6px}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border);margin-top:20px}
+  .foot{max-width:1400px;margin:0 auto;padding:44px 28px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+  .foot-brand{font-family:var(--display);font-weight:700;font-size:32px;letter-spacing:-.035em}
+  .foot-brand .dz{color:var(--accent-solid)}
+  .foot-tag{color:var(--text-dim);font-size:14px;margin-top:14px;max-width:320px;line-height:1.6}
+  .foot h5{font-family:var(--sans);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:16px}
+  .foot a{display:block;padding:6px 0;font-size:14px;color:var(--text);transition:.2s}
+  .foot a:hover{color:var(--accent-solid)}
+  .foot-bottom{border-top:1px solid var(--border);padding:20px 28px;max-width:1400px;margin:0 auto;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--text-dim);font-family:var(--sans);font-weight:500;letter-spacing:.02em}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:1024px){
+    .hero{grid-template-columns:1fr}
+    .features{grid-template-columns:repeat(2,1fr)}
+    .cat-grid{grid-template-columns:repeat(2,1fr)}
+    .contact-wrap{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:640px){
+    .nav{padding:14px 18px;flex-wrap:wrap;gap:12px}
+    .nav-links{order:3;width:100%;justify-content:space-between;overflow-x:auto}
+    .nav-links a{padding:8px 10px;font-size:12px}
+    .page{padding:0 18px}
+    .features{grid-template-columns:1fr;gap:30px;margin:32px 0 64px}
+    .cat-grid{grid-template-columns:1fr}
+    .hero h1{font-size:52px}
+    .marquee-item{font-size:20px}
+    .foot{grid-template-columns:1fr}
+    .phone-num{font-size:18px}
+    .hero-sub{gap:16px}
+  }
+  /* focus + motion */
+  a:focus-visible,button:focus-visible{outline:2.5px solid var(--blue-bright);outline-offset:3px;border-radius:6px}
+  @media(prefers-reduced-motion:reduce){.marquee-track{animation:none}.view{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAV ============ -->
+<div class="topbar">
+  <nav class="nav">
+    <div class="brand" onclick="go('home')">
+      <span><span class="dz">DZ</span>Laptops</span><span class="reg">®</span>
+    </div>
+    <div class="nav-links">
+      <a data-nav="home" onclick="go('home')" data-i18n="nav_home">Home</a>
+      <a data-nav="categories" onclick="go('categories')" data-i18n="nav_cat">Categories</a>
+      <a data-nav="contact" onclick="go('contact')" data-i18n="nav_contact">Contact</a>
+    </div>
+    <div class="nav-tools">
+      <div class="menu-wrap">
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu(event)" aria-label="Menu" aria-expanded="false">
+          <span class="menu-ico"><i></i><i></i><i></i></span>
+          <span class="menu-label" data-i18n="menu">Menu</span>
+        </button>
+        <div class="menu-drop" id="menuDrop">
+          <button class="menu-item" onclick="pickMenu('new')">
+            <span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.1 5.5L20 9l-4.4 3.8L17 19l-5-3.2L7 19l1.4-6.2L4 9l5.9-.5z"/></svg></span>
+            <span class="mi-text"><b data-i18n="menu_new">New arrivals</b><small data-i18n="menu_new_s">Just landed</small></span>
+          </button>
+          <button class="menu-item" onclick="pickMenu('sale')">
+            <span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H5v4l10 10 4-4z"/><circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+            <span class="mi-text"><b data-i18n="menu_sale">Sale</b><small data-i18n="menu_sale_s">Price drops</small></span>
+          </button>
+          <button class="menu-item" onclick="pickMenu('categories')">
+            <span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></span>
+            <span class="mi-text"><b data-i18n="menu_explore">Explore</b><small data-i18n="menu_explore_s">All brands</small></span>
+          </button>
+          <button class="menu-item" onclick="pickMenu('policy')">
+            <span class="mi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="0.5" fill="currentColor" stroke="none"/></svg></span>
+            <span class="mi-text"><b data-i18n="menu_policy">Policy &amp; info</b><small data-i18n="menu_policy_s">Good to know</small></span>
+          </button>
+        </div>
+      </div>
+      <div class="lang-menu">
+        <button class="icon-btn lang-btn" onclick="toggleLang(event)"><span id="langLabel">EN</span> ▾</button>
+        <div class="lang-drop" id="langDrop">
+          <button onclick="setLang('en')">English <span class="code">EN</span></button>
+          <button onclick="setLang('fr')">Français <span class="code">FR</span></button>
+          <button onclick="setLang('ar')">العربية <span class="code">AR</span></button>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">◐</button>
+    </div>
+  </nav>
+</div>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- ============ HOME ============ -->
+<main class="view active" id="view-home">
+  <div class="page">
+    <section class="hero">
+      <div>
+        <h1 class="display">
+          <span data-i18n="hero_1">For those who</span>
+          <span class="hl" data-i18n="hero_2">work</span>
+          <span data-i18n="hero_3">without limits</span><span class="globe"></span>
+        </h1>
+        <div class="hero-sub">
+          <p data-i18n="hero_sub">Genuine laptops. Tested, warrantied, delivered free to all 58 wilayas.</p>
+          <button class="info-btn" onclick="openAll()" aria-label="More info" data-i18n-title="hero_info_title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 16.5v-5"/><circle cx="12" cy="7.8" r="0.4" fill="currentColor" stroke="none"/></svg>
+            <span data-i18n="hero_info">See what's in stock</span>
+          </button>
+        </div>
+        <p class="hero-tag" data-i18n="hero_tag">Every machine ships with its original charger, a free handbag, a 3-month warranty and a 24-hour test period.</p>
+      </div>
+      <div class="hero-card" onclick="openAll()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAll()}">
+        <div class="edition" data-i18n="card_edition">/ in stock</div>
+        <div class="laptop-visual">
+          <svg class="laptop-svg" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="scr" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4DA6FF"/><stop offset="1" stop-color="#1B4DFF"/>
+              </linearGradient>
+              <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2A3355"/><stop offset="1" stop-color="#141A30"/>
+              </linearGradient>
+            </defs>
+            <rect x="45" y="18" width="150" height="98" rx="8" fill="url(#lid)" stroke="#1B4DFF" stroke-width="2"/>
+            <rect x="54" y="27" width="132" height="80" rx="4" fill="url(#scr)"/>
+            <rect x="62" y="38" width="70" height="7" rx="3.5" fill="#fff" opacity=".9"/>
+            <rect x="62" y="52" width="100" height="5" rx="2.5" fill="#fff" opacity=".5"/>
+            <rect x="62" y="63" width="86" height="5" rx="2.5" fill="#fff" opacity=".5"/>
+            <rect x="62" y="80" width="44" height="16" rx="4" fill="#0A0E1A" opacity=".55"/>
+            <path d="M28 116 L212 116 L226 140 Q227 148 219 148 L21 148 Q13 148 14 140 Z" fill="#1B2038" stroke="#1B4DFF" stroke-width="2"/>
+            <rect x="96" y="120" width="48" height="6" rx="3" fill="#4DA6FF"/>
+          </svg>
+        </div>
+        <h2 class="display"><span data-i18n="card_h1">Built for</span> <span class="thin" data-i18n="card_h2">those who ship.</span></h2>
+      </div>
+    </section>
+
+    <!-- feature strip = the shop info -->
+    <section class="features" id="featStrip"></section>
+
+    <!-- categories preview -->
+    <div class="page" style="padding:0">
+      <div class="sec-head">
+        <span class="sec-eyebrow" data-i18n="brands_eye">/ brands</span>
+      </div>
+      <h2 class="sec-title display"><span data-i18n="brands_t1">Ten names</span> <span class="clover">✦</span> <span data-i18n="brands_t2">one shop</span><span class="csym">C</span></h2>
+      <div class="sec-desc">
+        <p data-i18n="brands_d1">Pick your make. Every brand, checked and ready.</p>
+        <p data-i18n="brands_d2">A machine for every kind of work.</p>
+      </div>
+      <div class="pills" id="homePills"></div>
+      <div style="padding-bottom:80px">
+        <a class="wa-btn" onclick="go('categories')" style="cursor:pointer" data-i18n="browse_all">Browse all brands →</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ CATEGORIES ============ -->
+<main class="view" id="view-categories">
+  <div class="page">
+    <div class="cat-intro">
+      <div class="sec-head">
+        <span class="sec-eyebrow" data-i18n="cat_eye">/ categories</span>
+      </div>
+      <h2 class="sec-title display"><span data-i18n="cat_t1">Choose your</span> <span class="clover">✦</span> <span data-i18n="cat_t2">brand</span><span class="csym">R</span></h2>
+      <div class="sec-desc">
+        <p data-i18n="cat_d1">Ten trusted makers. Tap a brand to ask what's in stock.</p>
+        <p data-i18n="cat_d2">Every unit tested & warrantied.</p>
+      </div>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+</main>
+
+<!-- ============ BRAND DETAIL ============ -->
+<main class="view" id="view-brand">
+  <div class="page">
+    <div class="cat-intro">
+      <a class="back-link" onclick="go('categories')"><span class="back-arrow">←</span> <span data-i18n="brand_back">All brands</span></a>
+      <div class="sec-head" style="margin-top:22px">
+        <span class="sec-eyebrow" id="brandEyebrow">/ brand</span>
+      </div>
+      <h2 class="sec-title display" id="brandTitle">Brand</h2>
+      <div class="sec-desc">
+        <p id="brandSub"></p>
+        <p data-i18n="brand_ask_help">Tap any model to ask about it on WhatsApp.</p>
+      </div>
+    </div>
+    <div class="laptop-list" id="brandList"></div>
+  </div>
+</main>
+
+<!-- ============ ALL LAPTOPS ============ -->
+<main class="view" id="view-all">
+  <div class="page">
+    <div class="cat-intro">
+      <div class="sec-head">
+        <span class="sec-eyebrow" data-i18n="all_eye">/ in stock</span>
+      </div>
+      <h2 class="sec-title display"><span data-i18n="all_t1">Everything</span> <span class="clover">✦</span> <span data-i18n="all_t2">in the shop</span></h2>
+      <div class="sec-desc">
+        <p id="allSub"></p>
+        <p data-i18n="all_help">Filter by brand, or tap a model to ask on WhatsApp.</p>
+      </div>
+    </div>
+    <div class="filter-bar" id="allFilters"></div>
+    <div class="laptop-list" id="allList"></div>
+  </div>
+</main>
+
+<!-- ============ NEW ARRIVALS ============ -->
+<main class="view" id="view-new">
+  <div class="page">
+    <div class="cat-intro">
+      <div class="sec-head"><span class="sec-eyebrow" data-i18n="new_eye">/ just landed</span></div>
+      <h2 class="sec-title display"><span data-i18n="new_t1">New</span> <span class="clover">✦</span> <span data-i18n="new_t2">arrivals</span></h2>
+      <div class="sec-desc">
+        <p id="newSub"></p>
+        <p data-i18n="new_help">The latest machines to hit the shop.</p>
+      </div>
+    </div>
+    <div class="laptop-list" id="newList"></div>
+  </div>
+</main>
+
+<!-- ============ SALE ============ -->
+<main class="view" id="view-sale">
+  <div class="page">
+    <div class="cat-intro">
+      <div class="sec-head"><span class="sec-eyebrow" data-i18n="sale_eye">/ price drops</span></div>
+      <h2 class="sec-title display"><span data-i18n="sale_t1">On</span> <span class="clover">✦</span> <span data-i18n="sale_t2">sale</span></h2>
+      <div class="sec-desc">
+        <p id="saleSub"></p>
+        <p data-i18n="sale_help">Limited-time prices. When they're gone, they're gone.</p>
+      </div>
+    </div>
+    <div class="laptop-list" id="saleList"></div>
+  </div>
+</main>
+
+<!-- ============ POLICY & INFO ============ -->
+<main class="view" id="view-policy">
+  <div class="page">
+    <div class="cat-intro">
+      <div class="sec-head"><span class="sec-eyebrow" data-i18n="pol_eye">/ good to know</span></div>
+      <h2 class="sec-title display"><span data-i18n="pol_t1">Policy</span> <span class="clover">✦</span> <span data-i18n="pol_t2">& info</span></h2>
+      <div class="sec-desc">
+        <p data-i18n="pol_desc">Everything that comes with buying from DZLaptops.</p>
+      </div>
+    </div>
+    <div class="policy-grid" id="policyGrid"></div>
+  </div>
+</main>
+
+<!-- ============ CONTACT ============ -->
+<main class="view" id="view-contact">
+  <div class="page">
+    <div class="cat-intro">
+      <div class="sec-head"><span class="sec-eyebrow" data-i18n="ct_eye">/ contact</span></div>
+      <h2 class="sec-title display"><span data-i18n="ct_t1">Come by</span> <span class="clover">✦</span> <span data-i18n="ct_t2">or message us</span></h2>
+    </div>
+    <div class="contact-wrap">
+      <!-- phones + socials -->
+      <div class="contact-block dark">
+        <div class="cb-label" data-i18n="ct_call">Call or WhatsApp</div>
+        <div class="cb-title display" data-i18n="ct_reach">Reach us direct</div>
+        <div class="cb-sub" data-i18n="ct_reach_sub">Two lines, both on WhatsApp. Message anytime.</div>
+        <div class="phone-row">
+          <span class="phone-num">0552 42 57 76</span>
+          <a class="wa-btn" href="https://wa.me/213552425776" target="_blank" rel="noopener">WhatsApp ↗</a>
+        </div>
+        <div class="phone-row">
+          <span class="phone-num">0558 55 36 52</span>
+          <a class="wa-btn" href="https://wa.me/213558553652" target="_blank" rel="noopener">WhatsApp ↗</a>
+        </div>
+        <div class="social-row">
+          <a class="social-chip" href="https://instagram.com/dzlaptops" target="_blank" rel="noopener">◎ Instagram · @dzlaptops</a>
+          <a class="social-chip" href="https://facebook.com/dzlaptops" target="_blank" rel="noopener">f · @dzlaptops</a>
+        </div>
+      </div>
+
+      <!-- hours + map -->
+      <div class="contact-block">
+        <div class="cb-label" data-i18n="ct_hours">Hours & location</div>
+        <div class="cb-title display" data-i18n="ct_visit">Visit the shop</div>
+        <div class="hours-list" id="hoursList"></div>
+        <div class="map-embed">
+          <div class="map-fallback">
+            <div class="map-pin">📍</div>
+            <div style="font-weight:700;font-size:17px" data-i18n="ct_city">Oran, Algeria</div>
+            <a class="map-link" href="https://goo.gl/maps/xFQfuoDeWHXN9hqJ9" target="_blank" rel="noopener"><span data-i18n="ct_open_maps">Open in Google Maps</span> ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="foot">
+    <div>
+      <div class="foot-brand"><span class="dz">DZ</span>Laptops</div>
+      <p class="foot-tag" data-i18n="foot_tag">DZ Laptops vous propose le Meilleur des Ordinateurs Portable Européens (Non Reconditionné) au Meilleur PRIX avec GARANTIE. Laissez-vous faire Livrer Partout en Algerie, Paiement A la Livraison 🚚 ✅</p>
+    </div>
+    <div>
+      <h5 data-i18n="foot_menu">Menu</h5>
+      <a onclick="go('home')" style="cursor:pointer" data-i18n="nav_home">Home</a>
+      <a onclick="go('categories')" style="cursor:pointer" data-i18n="nav_cat">Categories</a>
+      <a onclick="go('contact')" style="cursor:pointer" data-i18n="nav_contact">Contact</a>
+    </div>
+    <div>
+      <h5 data-i18n="foot_reach">Reach</h5>
+      <a href="https://wa.me/213552425776" target="_blank" rel="noopener">0552 42 57 76</a>
+      <a href="https://wa.me/213558553652" target="_blank" rel="noopener">0558 55 36 52</a>
+      <a href="https://instagram.com/dzlaptops" target="_blank" rel="noopener">Instagram ↗</a>
+      <a href="https://facebook.com/dzlaptops" target="_blank" rel="noopener">Facebook ↗</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 DZLAPTOPS — ORAN, DZ · build 14</span>
+    <span data-i18n="foot_rights">ALL MACHINES TESTED & WARRANTIED</span>
+  </div>
+</footer>
+
+<script>
+/* ================= i18n ================= */
+const I18N = {
+  en:{
+    nav_home:"Home", nav_cat:"Categories", nav_contact:"Contact",
+    hero_1:"For those who", hero_2:"work", hero_3:"without limits",
+    hero_sub:"Genuine laptops. Tested, warrantied, delivered free to all 58 wilayas.",
+    hero_info:"See what's in stock", hero_info_title:"See every laptop in stock",
+    all_eye:"/ in stock", all_t1:"Everything", all_t2:"in the shop",
+    all_help:"Filter by brand, or tap a model to ask on WhatsApp.", all_brands:"All",
+    all_available:"all available",
+    menu:"Menu", menu_new:"New arrivals", menu_new_s:"Just landed",
+    menu_sale:"Sale", menu_sale_s:"Price drops",
+    menu_explore:"Explore", menu_explore_s:"All brands",
+    menu_policy:"Policy & info", menu_policy_s:"Good to know",
+    tag_new:"New", tag_sale:"Sale",
+    ds_ask:"Ask about this on WhatsApp", ds_post:"See the original post",
+    new_eye:"/ just landed", new_t1:"New", new_t2:"arrivals",
+    new_help:"The latest machines to hit the shop.", new_count:"new this season",
+    sale_eye:"/ price drops", sale_t1:"On", sale_t2:"sale",
+    sale_help:"Limited-time prices. When they're gone, they're gone.", sale_count:"on sale now",
+    pol_eye:"/ good to know", pol_t1:"Policy", pol_t2:"& info",
+    pol_desc:"Everything that comes with buying from DZLaptops.",
+    pol_shop_title:"Visit the shop", pol_shop_body:"Oran, Algeria · Open 10:00–20:00 daily, closed Friday.",
+    policy:[
+      ["clock","Opening hours","Open every day 10:00–20:00. Closed on Fridays."],
+      ["shield","3-month warranty","Real coverage on every laptop we sell."],
+      ["truck","Livraison Gratuite Partout en Algerie","Paiement a la Collecte."],
+      ["gift","Un Cadeau Offert sur Chaque Achat","A free gift with every purchase."],
+      ["plug","Chargeur Original Fourni","The genuine charger is included."]
+    ],
+    hero_tag:"DZ Laptops vous propose le Meilleur des Ordinateurs Portable Européens (Non Reconditionné) au Meilleur PRIX avec GARANTIE. Laissez-vous faire Livrer Partout en Algerie, Paiement A la Livraison 🚚 ✅",
+    card_edition:"/ in stock", card_h1:"Built for", card_h2:"those who ship.",
+    brands_eye:"/ brands", brands_t1:"Several brands", brands_t2:"one shop",
+    brands_d1:"Pick your make. Every brand, checked and ready.", brands_d2:"A machine for every kind of work.",
+    browse_all:"Browse all brands →",
+    cat_eye:"/ categories", cat_t1:"What will you", cat_t2:"use it for",
+    cat_d1:"Find the right machine for what you actually do.", cat_d2:"Every unit tested & warrantied.",
+    cats:{student:"Étudiant, Enseignant & Bureautique",gaming:"Gamers, Architectes & Ingénieurs",dev:"Développeur & Programmation",creator:"Créateur de contenu",business:"Entreprise"},
+    cat_eyebrows:{student:"study & office",gaming:"gaming & engineering",dev:"development",creator:"content creation",business:"business"},
+    cat_empty:"Nothing in this category yet — check back soon.",
+    ct_eye:"/ contact", ct_t1:"Come by", ct_t2:"or message us",
+    ct_call:"Call or WhatsApp", ct_reach:"Reach us direct", ct_reach_sub:"Two lines, both on WhatsApp. Message anytime.",
+    ct_hours:"Hours & location", ct_visit:"Visit the shop", ct_city:"Oran, Algeria", ct_open_maps:"Open in Google Maps",
+    foot_tag:"DZ Laptops vous propose le Meilleur des Ordinateurs Portable Européens (Non Reconditionné) au Meilleur PRIX avec GARANTIE. Laissez-vous faire Livrer Partout en Algerie, Paiement A la Livraison 🚚 ✅",
+    foot_menu:"Menu", foot_reach:"Reach", foot_rights:"All machines tested & warrantied",
+    feats:[
+      ["🕙","Open 10:00 – 20:00","Every day except Friday — we're closed Fridays."],
+      ["🛡️","3-month warranty","Real coverage on every laptop we sell."],
+      ["🚚","Livraison Gratuite Partout en Algerie","Paiement a la Collecte."],
+      ["🎁","Un Cadeau Offert sur Chaque Achat","A free gift with every purchase."],
+      ["🔌","Chargeur Original Fourni","The genuine charger is included."]
+    ],
+    days:[["Saturday","10:00 – 20:00",0],["Sunday","10:00 – 20:00",0],["Monday","10:00 – 20:00",0],["Tuesday","10:00 – 20:00",0],["Wednesday","10:00 – 20:00",0],["Thursday","10:00 – 20:00",0],["Friday","Closed",1]],
+    ask:"Ask what's in stock",
+    in_stock_short:"in stock", brand_models:"models", brand_back:"All categories",
+    brand_ask_help:"Tap any model to ask about it on WhatsApp.",
+    brand_wa:"Hi, is this available? —", status_in:"In stock", status_out:"On order",
+    currency:"DZD"
+  },
+  fr:{
+    nav_home:"Accueil", nav_cat:"Catégories", nav_contact:"Contact",
+    hero_1:"Pour ceux qui", hero_2:"travaillent", hero_3:"sans limites",
+    hero_sub:"Ordinateurs authentiques. Testés, garantis, livrés gratuitement dans les 58 wilayas.",
+    hero_info:"Voir le stock", hero_info_title:"Voir tous les ordinateurs en stock",
+    all_eye:"/ en stock", all_t1:"Tout", all_t2:"en boutique",
+    all_help:"Filtrez par marque, ou touchez un modèle pour demander sur WhatsApp.", all_brands:"Tous",
+    all_available:"tous disponibles",
+    menu:"Menu", menu_new:"Nouveautés", menu_new_s:"Vient d'arriver",
+    menu_sale:"Soldes", menu_sale_s:"Baisses de prix",
+    menu_explore:"Explorer", menu_explore_s:"Toutes les marques",
+    menu_policy:"Infos & politique", menu_policy_s:"Bon à savoir",
+    tag_new:"Nouveau", tag_sale:"Promo",
+    ds_ask:"Demander sur WhatsApp", ds_post:"Voir la publication",
+    new_eye:"/ vient d'arriver", new_t1:"Nouveautés", new_t2:"",
+    new_help:"Les dernières machines arrivées en boutique.", new_count:"nouveautés cette saison",
+    sale_eye:"/ baisses de prix", sale_t1:"En", sale_t2:"solde",
+    sale_help:"Prix pour une durée limitée. Une fois partis, c'est fini.", sale_count:"en solde maintenant",
+    pol_eye:"/ bon à savoir", pol_t1:"Infos", pol_t2:"& politique",
+    pol_desc:"Tout ce qui accompagne un achat chez DZLaptops.",
+    pol_shop_title:"Venez à la boutique", pol_shop_body:"Oran, Algérie · Ouvert 10:00–20:00 tous les jours, fermé le vendredi.",
+    policy:[
+      ["clock","Horaires d'ouverture","Ouvert tous les jours 10:00–20:00. Fermé le vendredi."],
+      ["shield","Garantie 3 mois","Une vraie garantie sur chaque ordinateur vendu."],
+      ["truck","Livraison Gratuite Partout en Algerie","Paiement a la Collecte."],
+      ["gift","Un Cadeau Offert sur Chaque Achat","Un cadeau avec chaque achat."],
+      ["plug","Chargeur Original Fourni","Le chargeur d'origine est inclus."]
+    ],
+    hero_tag:"DZ Laptops vous propose le Meilleur des Ordinateurs Portable Européens (Non Reconditionné) au Meilleur PRIX avec GARANTIE. Laissez-vous faire Livrer Partout en Algerie, Paiement A la Livraison 🚚 ✅",
+    card_edition:"/ en stock", card_h1:"Conçu pour", card_h2:"ceux qui avancent.",
+    brands_eye:"/ marques", brands_t1:"Plusieurs marques", brands_t2:"une boutique",
+    brands_d1:"Choisissez votre marque. Toutes vérifiées et prêtes.", brands_d2:"Une machine pour chaque usage.",
+    browse_all:"Voir toutes les marques →",
+    cat_eye:"/ catégories", cat_t1:"Pour quel", cat_t2:"usage",
+    cat_d1:"Trouvez la machine adaptée à votre usage.", cat_d2:"Chaque unité testée et garantie.",
+    cats:{student:"Étudiant, Enseignant & Bureautique",gaming:"Gamers, Architectes & Ingénieurs",dev:"Développeur & Programmation",creator:"Créateur de contenu",business:"Entreprise"},
+    cat_eyebrows:{student:"études & bureautique",gaming:"gaming & ingénierie",dev:"développement",creator:"création de contenu",business:"entreprise"},
+    cat_empty:"Rien dans cette catégorie pour le moment.",
+    ct_eye:"/ contact", ct_t1:"Passez nous voir", ct_t2:"ou écrivez-nous",
+    ct_call:"Appel ou WhatsApp", ct_reach:"Contactez-nous", ct_reach_sub:"Deux lignes, toutes deux sur WhatsApp. Écrivez à tout moment.",
+    ct_hours:"Horaires & adresse", ct_visit:"Venez à la boutique", ct_city:"Oran, Algérie", ct_open_maps:"Ouvrir dans Google Maps",
+    foot_tag:"DZ Laptops vous propose le Meilleur des Ordinateurs Portable Européens (Non Reconditionné) au Meilleur PRIX avec GARANTIE. Laissez-vous faire Livrer Partout en Algerie, Paiement A la Livraison 🚚 ✅",
+    foot_menu:"Menu", foot_reach:"Contact", foot_rights:"Toutes les machines testées et garanties",
+    feats:[
+      ["🕙","Ouvert 10:00 – 20:00","Tous les jours sauf vendredi — fermé le vendredi."],
+      ["🛡️","Garantie 3 mois","Une vraie garantie sur chaque ordinateur."],
+      ["🚚","Livraison Gratuite Partout en Algerie","Paiement a la Collecte."],
+      ["🎁","Un Cadeau Offert sur Chaque Achat","Un cadeau avec chaque achat."],
+      ["🔌","Chargeur Original Fourni","Le chargeur d'origine est inclus."]
+    ],
+    days:[["Samedi","10:00 – 20:00",0],["Dimanche","10:00 – 20:00",0],["Lundi","10:00 – 20:00",0],["Mardi","10:00 – 20:00",0],["Mercredi","10:00 – 20:00",0],["Jeudi","10:00 – 20:00",0],["Vendredi","Fermé",1]],
+    ask:"Demander le stock",
+    in_stock_short:"en stock", brand_models:"modèles", brand_back:"Toutes les catégories",
+    brand_ask_help:"Touchez un modèle pour le demander sur WhatsApp.",
+    brand_wa:"Bonjour, est-ce disponible ? —", status_in:"En stock", status_out:"Sur commande",
+    currency:"DZD"
+  },
+  ar:{
+    nav_home:"الرئيسية", nav_cat:"الفئات", nav_contact:"اتصل بنا",
+    hero_1:"لأولئك الذين", hero_2:"يعملون", hero_3:"بلا حدود",
+    hero_sub:"حواسيب أصلية. مُختبرة، مضمونة، وتوصيل مجاني إلى كل الولايات الـ58.",
+    hero_info:"شاهد المتوفر", hero_info_title:"شاهد كل الحواسيب المتوفرة",
+    all_eye:"/ متوفر", all_t1:"كل شيء", all_t2:"في المتجر",
+    all_help:"صفِّ حسب العلامة، أو اضغط على موديل للسؤال عبر واتساب.", all_brands:"الكل",
+    all_available:"كلها متوفرة",
+    menu:"القائمة", menu_new:"وصل حديثاً", menu_new_s:"جديد",
+    menu_sale:"تخفيضات", menu_sale_s:"أسعار منخفضة",
+    menu_explore:"استكشف", menu_explore_s:"كل العلامات",
+    menu_policy:"معلومات وسياسة", menu_policy_s:"معلومات مفيدة",
+    tag_new:"جديد", tag_sale:"تخفيض",
+    ds_ask:"اسأل عبر واتساب", ds_post:"شاهد المنشور الأصلي",
+    new_eye:"/ وصل حديثاً", new_t1:"وصل", new_t2:"حديثاً",
+    new_help:"أحدث الأجهزة التي وصلت إلى المتجر.", new_count:"جديدة هذا الموسم",
+    sale_eye:"/ أسعار منخفضة", sale_t1:"في", sale_t2:"التخفيضات",
+    sale_help:"أسعار لفترة محدودة. عند نفادها تنتهي.", sale_count:"في التخفيضات الآن",
+    pol_eye:"/ معلومات مفيدة", pol_t1:"معلومات", pol_t2:"وسياسة",
+    pol_desc:"كل ما يأتي مع الشراء من DZLaptops.",
+    pol_shop_title:"زُر المتجر", pol_shop_body:"وهران، الجزائر · مفتوح 10:00–20:00 يومياً، مغلق يوم الجمعة.",
+    policy:[
+      ["clock","أوقات العمل","مفتوح كل يوم 10:00–20:00. مغلق يوم الجمعة."],
+      ["shield","ضمان 3 أشهر","ضمان حقيقي على كل حاسوب نبيعه."],
+      ["truck","توصيل مجاني إلى كل الجزائر","الدفع عند الاستلام."],
+      ["gift","هدية مجانية مع كل عملية شراء","هدية مع كل شراء."],
+      ["plug","شاحن أصلي مُرفق","الشاحن الأصلي مُتضمَّن."]
+    ],
+    hero_tag:"DZ Laptops vous propose le Meilleur des Ordinateurs Portable Européens (Non Reconditionné) au Meilleur PRIX avec GARANTIE. Laissez-vous faire Livrer Partout en Algerie, Paiement A la Livraison 🚚 ✅",
+    card_edition:"/ متوفر", card_h1:"مصمم لأجل", card_h2:"من ينجزون العمل.",
+    brands_eye:"/ العلامات", brands_t1:"عدة علامات", brands_t2:"متجر واحد",
+    brands_d1:"اختر علامتك. كل الأجهزة مفحوصة وجاهزة.", brands_d2:"جهاز لكل نوع من العمل.",
+    browse_all:"تصفح كل العلامات ←",
+    cat_eye:"/ الفئات", cat_t1:"لأي", cat_t2:"استخدام",
+    cat_d1:"اعثر على الجهاز المناسب لاستخدامك.", cat_d2:"كل جهاز مفحوص ومضمون.",
+    cats:{student:"طلاب وأساتذة ومكتبيات",gaming:"ألعاب ومهندسون ومعماريون",dev:"مطورون وبرمجة",creator:"صناع المحتوى",business:"شركات"},
+    cat_eyebrows:{student:"دراسة ومكتب",gaming:"ألعاب وهندسة",dev:"تطوير",creator:"صناعة المحتوى",business:"شركات"},
+    cat_empty:"لا يوجد شيء في هذه الفئة بعد.",
+    ct_eye:"/ اتصل", ct_t1:"مرّ علينا", ct_t2:"أو راسلنا",
+    ct_call:"اتصال أو واتساب", ct_reach:"تواصل معنا مباشرة", ct_reach_sub:"خطان، كلاهما على واتساب. راسلنا في أي وقت.",
+    ct_hours:"الأوقات والموقع", ct_visit:"زُر المتجر", ct_city:"وهران، الجزائر", ct_open_maps:"افتح في خرائط Google",
+    foot_tag:"DZ Laptops vous propose le Meilleur des Ordinateurs Portable Européens (Non Reconditionné) au Meilleur PRIX avec GARANTIE. Laissez-vous faire Livrer Partout en Algerie, Paiement A la Livraison 🚚 ✅",
+    foot_menu:"القائمة", foot_reach:"تواصل", foot_rights:"كل الأجهزة مفحوصة ومضمونة",
+    feats:[
+      ["🕙","مفتوح 10:00 – 20:00","كل يوم ما عدا الجمعة — مغلق يوم الجمعة."],
+      ["🛡️","ضمان 3 أشهر","ضمان حقيقي على كل حاسوب نبيعه."],
+      ["🚚","توصيل مجاني إلى كل الجزائر","الدفع عند الاستلام."],
+      ["🎁","هدية مجانية مع كل عملية شراء","هدية مع كل شراء."],
+      ["🔌","شاحن أصلي مُرفق","الشاحن الأصلي مُتضمَّن."]
+    ],
+    days:[["السبت","10:00 – 20:00",0],["الأحد","10:00 – 20:00",0],["الإثنين","10:00 – 20:00",0],["الثلاثاء","10:00 – 20:00",0],["الأربعاء","10:00 – 20:00",0],["الخميس","10:00 – 20:00",0],["الجمعة","مغلق",1]],
+    ask:"اسأل عن المتوفر",
+    in_stock_short:"متوفر", brand_models:"موديلات", brand_back:"كل الفئات",
+    brand_ask_help:"اضغط على أي موديل للسؤال عنه عبر واتساب.",
+    brand_wa:"مرحبا، هل هذا متوفر؟ —", status_in:"متوفر", status_out:"بالطلب",
+    currency:"دج"
+  }
+};
+
+/* ====== SUPABASE — fill these in ====== */
+const SUPABASE_URL  = "https://ayaemwiradsxegvnefne.supabase.co";
+const SUPABASE_ANON = "sb_publishable_oWDazfX7EJsRCxKmww-s_w_CQuCGfiE";
+/* ====================================== */
+
+const BRANDS = ["Lenovo","HP","Dell","Asus","Huawei","MacBook","Microsoft","Samsung","MSI","Acer","Others"];
+
+/* ---- USE-CASE CATEGORIES (what the Categories page shows) ---- */
+const CATS = ["student","gaming","dev","creator","business"];
+const CAT_ICONS = {
+  student:'<svg viewBox="0 0 24 24"><path d="M12 4L2 9l10 5 10-5z"/><path d="M6 11.5V17c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5.5"/></svg>',
+  gaming:'<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 11v3M5.5 12.5h3M15.5 12h.01M18 14h.01"/></svg>',
+  dev:'<svg viewBox="0 0 24 24"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/></svg>',
+  creator:'<svg viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="2.5"/><path d="M16 10.5l6-3.5v10l-6-3.5z"/></svg>',
+  business:'<svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="12.5" rx="2.5"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7"/><path d="M2.5 12h19"/></svg>',
+};
+
+/* Auto-guess a laptop's category from its specs.
+   The admin can override this per laptop — this is just a sensible default. */
+function guessCat(it){
+  const s = ((it.spec||[]).join(" ") + " " +
+             Object.values(it.full||{}).join(" ") + " " +
+             (it.model||"")).toLowerCase();
+  const ram = parseInt((s.match(/(\d+)\s*(go|gb)\b/)||[])[1] || "0", 10);
+  const hasGPU = /rtx|gtx|radeon rx|geforce|arc a\d/.test(s);
+  const bigGPU = /rtx\s*40[6-9]|rtx\s*4[89]|rtx\s*30[7-9]/.test(s);
+  const gamerName = /rog|legion|omen|predator|nitro|katana|cyborg|stealth|tuf|helios|raider/.test(s);
+  const proScreen = /oled|4k|3k|2\.8k|retina|xdr|amoled|dci-p3/.test(s);
+  const bizName = /thinkpad|latitude|elitebook|probook|expertbook|galaxy book.*pro|surface/.test(s);
+
+  if (gamerName || bigGPU || (hasGPU && ram >= 16)) return "gaming";
+  if (proScreen && ram >= 16) return "creator";
+  if (ram >= 16 && /ultra|i7|i9|ryzen 7|ryzen 9|m[23]\s*(pro|max)?/.test(s)) return "dev";
+  if (bizName) return "business";
+  return "student";
+}
+function catOf(it){ return CATS.includes(it.cat) ? it.cat : guessCat(it); }
+function itemsInCat(c){ return allItems().filter(x=>catOf(x)===c); }
+const BRAND_TAGS = {Lenovo:"ThinkPad · IdeaPad",HP:"Pavilion · Omen",Dell:"XPS · Latitude",Asus:"ROG · Zenbook",Huawei:"MateBook",MacBook:"Air · Pro",Microsoft:"Surface",Samsung:"Galaxy Book",MSI:"Gaming",Acer:"Aspire · Predator",Others:"More brands"};
+
+/* brand logos — Simple Icons CDN (monochrome SVG, rendered white on the blue mark).
+   If a logo 404s or the CDN is down, we fall back to the brand's first letter. */
+const BRAND_SLUG = {
+  Lenovo:"lenovo", HP:"hp", Dell:"dell", Asus:"asus", Huawei:"huawei",
+  MacBook:"apple", Microsoft:"microsoft", Samsung:"samsung", MSI:"msibusiness",
+  Acer:"acer", Others:null,
+};
+function brandLogo(brand, cls){
+  const slug = BRAND_SLUG[brand];
+  const letter = (brand||"?")[0];
+  if(!slug) return `<span class="${cls}-txt">${letter}</span>`;
+  // white icon; onerror swaps in the letter so a card is never blank
+  return `<img class="${cls}-img"
+     src="https://cdn.simpleicons.org/${slug}/ffffff"
+     alt="${brand}" loading="lazy"
+     onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'${cls}-txt',textContent:'${letter}'}))">`;
+}
+
+/* per-brand laptop catalog — edit specs/prices freely.
+   spec = [screen, cpu, ram, storage]; price in DZD; stock true/false */
+/* per-laptop fields:
+   spec=[screen,cpu,ram,storage]; price in DZD (current price);
+   isNew:true = show in New Arrivals; was:"…" = original price (marks it On Sale) */
+const CATALOG = {
+  Lenovo:[
+    {model:"ThinkPad X1 Carbon G11",spec:['14" 2.2K','Core i7-1355U','16 GB','512 GB SSD'],price:"185 000",isNew:true},
+    {model:"IdeaPad Slim 5",spec:['16" WUXGA','Ryzen 5 7530U','16 GB','512 GB SSD'],price:"96 000"},
+    {model:"Legion 5 Pro",spec:['16" 165Hz','Core i7 · RTX 4060','16 GB','1 TB SSD'],price:"248 000",was:"268 000"},
+  ],
+  HP:[
+    {model:"Pavilion 15",spec:['15.6" FHD','Core i5-1335U','16 GB','512 GB SSD'],price:"92 000"},
+    {model:"Omen 16",spec:['16.1" 165Hz','Ryzen 7 · RTX 4060','16 GB','1 TB SSD'],price:"255 000",isNew:true},
+    {model:"EliteBook 840 G10",spec:['14" WUXGA','Core i7-1355U','16 GB','512 GB SSD'],price:"165 000",was:"178 000"},
+  ],
+  Dell:[
+    {model:"XPS 13 Plus",spec:['13.4" 3.5K OLED','Core i7-1360P','16 GB','512 GB SSD'],price:"212 000",isNew:true},
+    {model:"Latitude 5440",spec:['14" FHD','Core i5-1345U','16 GB','512 GB SSD'],price:"134 000"},
+    {model:"G15 Gaming",spec:['15.6" 120Hz','Core i7 · RTX 4050','16 GB','512 GB SSD'],price:"182 000",was:"198 000"},
+  ],
+  Asus:[
+    {model:"Zenbook 14 OLED",spec:['14" 2.8K OLED','Ryzen 7 7730U','16 GB','1 TB SSD'],price:"162 000",isNew:true},
+    {model:"ROG Strix G16",spec:['16" 165Hz','Core i7 · RTX 4070','16 GB','1 TB SSD'],price:"322 000"},
+    {model:"Vivobook 15",spec:['15.6" FHD','Core i3-1215U','8 GB','512 GB SSD'],price:"62 000",was:"68 000"},
+  ],
+  Huawei:[
+    {model:"MateBook D16",spec:['16" FHD','Core i5-13420H','16 GB','512 GB SSD'],price:"118 000"},
+    {model:"MateBook X Pro",spec:['14.2" 3.1K','Core i7-1360P','16 GB','1 TB SSD'],price:"235 000",isNew:true},
+  ],
+  MacBook:[
+    {model:"MacBook Air M2",spec:['13.6" Retina','Apple M2','8 GB','256 GB SSD'],price:"168 000",was:"178 000"},
+    {model:"MacBook Air M3 15\"",spec:['15.3" Retina','Apple M3','16 GB','512 GB SSD'],price:"268 000",isNew:true},
+    {model:"MacBook Pro 14 M3 Pro",spec:['14.2" XDR','Apple M3 Pro','18 GB','512 GB SSD'],price:"392 000",isNew:true},
+  ],
+  Microsoft:[
+    {model:"Surface Laptop 5",spec:['13.5" PixelSense','Core i5-1235U','8 GB','512 GB SSD'],price:"156 000"},
+    {model:"Surface Pro 9",spec:['13" 120Hz','Core i7-1255U','16 GB','256 GB SSD'],price:"185 000",was:"198 000"},
+  ],
+  Samsung:[
+    {model:"Galaxy Book4",spec:['15.6" FHD','Core i5-120U','16 GB','512 GB SSD'],price:"128 000"},
+    {model:"Galaxy Book4 Pro",spec:['14" 3K AMOLED','Core Ultra 7','16 GB','1 TB SSD'],price:"265 000",isNew:true},
+  ],
+  MSI:[
+    {model:"Katana 15",spec:['15.6" 144Hz','Core i7 · RTX 4060','16 GB','1 TB SSD'],price:"245 000"},
+    {model:"Cyborg 15",spec:['15.6" 144Hz','Core i5 · RTX 4050','16 GB','512 GB SSD'],price:"178 000",was:"192 000"},
+    {model:"Stealth 16 AI",spec:['16" 240Hz','Core Ultra 9 · RTX 4070','32 GB','1 TB SSD'],price:"438 000",isNew:true},
+  ],
+  Acer:[
+    {model:"Aspire 5",spec:['15.6" FHD','Core i5-1335U','16 GB','512 GB SSD'],price:"86 000"},
+    {model:"Swift Go 14",spec:['14" 2.8K OLED','Core Ultra 5','16 GB','512 GB SSD'],price:"148 000",isNew:true},
+    {model:"Predator Helios Neo",spec:['16" 165Hz','Core i7 · RTX 4060','16 GB','1 TB SSD'],price:"258 000",was:"278 000"},
+  ],
+};
+
+/* clean line icons (match the site — no emoji, no boxes) */
+const ICONS={
+  clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  shield:'<svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+  timer:'<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M9 2h6M18.5 6.5l-1.5 1.5"/></svg>',
+  truck:'<svg viewBox="0 0 24 24"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>',
+  bag:'<svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+  gift:'<svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="11" rx="1.5"/><path d="M3 13h18M12 9v11"/><path d="M12 9S10.5 4.5 8 5.2 8.8 9 12 9zM12 9s1.5-4.5 4-3.8S15.2 9 12 9z"/></svg>',
+  plug:'<svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M6 8h12v3a6 6 0 0 1-12 0zM12 17v5"/></svg>',
+};
+const ICON_ORDER=['clock','shield','truck','gift','plug'];
+const POLICY_ICONS={
+  clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  shield:'<svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+  timer:'<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M9 2h6M18.5 6.5l-1.5 1.5"/></svg>',
+  truck:'<svg viewBox="0 0 24 24"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg>',
+  bag:'<svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+  gift:'<svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="11" rx="1.5"/><path d="M3 13h18M12 9v11"/><path d="M12 9S10.5 4.5 8 5.2 8.8 9 12 9zM12 9s1.5-4.5 4-3.8S15.2 9 12 9z"/></svg>',
+  plug:'<svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6M6 8h12v3a6 6 0 0 1-12 0zM12 17v5"/></svg>',
+  pin:'<svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+  info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="0.5"/></svg>',
+};
+
+let lang="en", theme="light", currentBrand=null, currentCat=null, allFilter="ALL";
+
+/* ---- marquee items ---- */
+function marqueeText(){
+  const t=I18N[lang];
+  return (t.feats||[]).map(f=>f[1]);   // adapts to however many features there are
+}
+function buildMarquee(){
+  const items=marqueeText();
+  const one=items.map(x=>`<span class="marquee-item">${x}<span class="marquee-dot"></span></span>`).join("");
+  document.getElementById("marquee").innerHTML=one+one;
+}
+
+/* ---- render dynamic bits ---- */
+function render(){
+  const t=I18N[lang];
+  // text nodes
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k=el.getAttribute("data-i18n");
+    if(t[k]!==undefined && typeof t[k]==="string") el.textContent=t[k];
+  });
+  document.getElementById("langLabel").textContent=lang.toUpperCase();
+
+  // feature strip — clean line icons, floaty
+  document.getElementById("featStrip").innerHTML=t.feats.map((f,i)=>`
+    <div class="feat">
+      <div class="feat-ico">${ICONS[ICON_ORDER[i]]}</div>
+      <div class="feat-body"><h4>${f[1]}</h4><p>${f[2]}</p></div>
+    </div>`).join("");
+
+  // home pills (brands) → open the brand page
+  document.getElementById("homePills").innerHTML=BRANDS.map((b,i)=>
+    `<span class="pill ${i%4===1?'solid':''}" onclick="openBrand('${b}')">${b}</span>`).join("");
+
+  // category grid → the 5 use-case collections
+  document.getElementById("catGrid").innerHTML=CATS.map((c,i)=>{
+    const n=itemsInCat(c).length;
+    return `<a class="cat-card usecase" onclick="openCat('${c}')">
+      <div class="cat-top">
+        <div class="cat-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="cat-ico">${CAT_ICONS[c]}</div>
+      </div>
+      <div class="cat-name display">${t.cats[c]}</div>
+      <div class="cat-foot">
+        <span class="cat-tag">${n} ${t.brand_models}</span>
+        <span class="cat-arrow">↗</span>
+      </div>
+    </a>`;
+  }).join("");
+
+  // hours
+  document.getElementById("hoursList").innerHTML=t.days.map(d=>`
+    <div class="hours-row ${d[2]?'closed':''}">
+      <span class="day">${d[0]}</span><span class="time">${d[1]}</span>
+    </div>`).join("");
+
+  if(currentBrand) renderBrand();
+  if(currentCat) renderCat();
+  renderAll();
+  renderNew();
+  renderSale();
+  renderPolicy();
+  buildMarquee();
+}
+
+/* ---- routing ---- */
+function go(v){
+  document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+  document.getElementById("view-"+v).classList.add("active");
+  // secondary pages keep "Categories" highlighted in the nav
+  const navKey=(v==="brand"||v==="all"||v==="new"||v==="sale"||v==="policy")?"categories":v;
+  document.querySelectorAll(".nav-links a").forEach(a=>a.classList.toggle("active",a.dataset.nav===navKey));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---- dropdown menu ---- */
+function toggleMenu(e){
+  e.stopPropagation();
+  const d=document.getElementById("menuDrop"), b=document.getElementById("menuBtn");
+  const open=d.classList.toggle("open");
+  b.classList.toggle("open",open);
+  b.setAttribute("aria-expanded",open?"true":"false");
+}
+function closeMenu(){
+  document.getElementById("menuDrop").classList.remove("open");
+  const b=document.getElementById("menuBtn");
+  b.classList.remove("open"); b.setAttribute("aria-expanded","false");
+}
+function pickMenu(what){
+  closeMenu();
+  if(what==="new") openNew();
+  else if(what==="sale") openSale();
+  else if(what==="categories") go('categories');
+  else if(what==="policy") go('policy');
+}
+
+/* ---- policy page ---- */
+function renderPolicy(){
+  const t=I18N[lang];
+  const P=t.policy; // array of [iconKey,title,body]
+  const box=document.getElementById("policyGrid");
+  if(!box) return;
+  box.innerHTML = P.map(function(p){
+    return `<div class="policy-card">
+      <div class="pc-ico">${POLICY_ICONS[p[0]]||POLICY_ICONS.info}</div>
+      <div class="pc-body"><h4>${p[1]}</h4><p>${p[2]}</p></div>
+    </div>`;
+  }).join("") +
+  `<div class="policy-card wide">
+     <div class="pc-ico">${POLICY_ICONS.pin}</div>
+     <div class="pc-body"><h4>${t.pol_shop_title}</h4>
+       <p>${t.pol_shop_body}</p>
+       <a class="pc-map-link" href="https://goo.gl/maps/xFQfuoDeWHXN9hqJ9" target="_blank" rel="noopener">${t.ct_open_maps} ↗</a>
+     </div>
+   </div>`;
+}
+
+/* ---- all laptops page ---- */
+/* shared laptop card — showModelBrand=true prefixes the brand name */
+function laptopCard(it, brand, showModelBrand){
+  const t=I18N[lang];
+  const title = showModelBrand ? `${brand} ${it.model}` : it.model;
+  let tags="";
+  if(it.isNew) tags+=`<span class="lc-tag new">${t.tag_new}</span>`;
+  if(it.was)  tags+=`<span class="lc-tag sale">${t.tag_sale}</span>`;
+  const price = it.was
+    ? `<span class="was">${it.was}</span><span class="amt">${it.price}</span><span class="cur">${t.currency}</span>`
+    : `<span class="amt">${it.price}</span><span class="cur">${t.currency}</span>`;
+  // stash the item so the detail sheet can read it back
+  const key = stash(it, brand);
+  return `<a class="laptop-card" onclick="openDetail('${key}')" role="button" tabindex="0"
+             onkeydown="if(event.key==='Enter'){openDetail('${key}')}">
+    <div class="lc-mark">${brandLogo(brand,"lc")}</div>
+    <div class="lc-main">
+      <div class="lc-model">${title}</div>
+      <div class="lc-spec">${it.spec.map(s=>`<span>${s}</span>`).join("")}</div>
+    </div>
+    <div class="lc-price">${price}</div>
+    <div class="lc-tags">${tags||`<span class="lc-tag stock">${t.status_in}</span>`}</div>
+  </a>`;
+}
+
+/* ---- detail sheet: full specs on tap ---- */
+const STASH = {};
+let stashN = 0;
+function stash(it, brand){
+  const k = "L" + (++stashN);
+  STASH[k] = Object.assign({}, it, { _brand: brand });
+  return k;
+}
+// nice labels for the full-spec keys the parser produces
+const SPEC_LABELS = {
+  en:{cpu:"Processor",gpu:"Graphics",ram:"Memory",storage:"Storage",screen:"Display",
+      design:"Design",connectivity:"Connectivity",ports:"Ports",keyboard:"Keyboard",
+      webcam:"Webcam",security:"Security",battery:"Battery",os:"Operating system"},
+  fr:{cpu:"Processeur",gpu:"Carte graphique",ram:"Mémoire",storage:"Stockage",screen:"Écran",
+      design:"Design",connectivity:"Connectivité",ports:"Ports",keyboard:"Clavier",
+      webcam:"Webcam",security:"Sécurité",battery:"Batterie",os:"Système"},
+  ar:{cpu:"المعالج",gpu:"بطاقة الرسومات",ram:"الذاكرة",storage:"التخزين",screen:"الشاشة",
+      design:"التصميم",connectivity:"الاتصال",ports:"المنافذ",keyboard:"لوحة المفاتيح",
+      webcam:"الكاميرا",security:"الأمان",battery:"البطارية",os:"النظام"},
+};
+function openDetail(key){
+  const it = STASH[key]; if(!it) return;
+  const t = I18N[lang], brand = it._brand;
+  const L = SPEC_LABELS[lang] || SPEC_LABELS.en;
+  const full = it.full || {};
+  const rows = Object.keys(full).filter(k=>full[k])
+    .map(k=>`<div class="ds-row"><span class="ds-k">${L[k]||k}</span><span class="ds-v">${full[k]}</span></div>`)
+    .join("");
+  // if no full specs (fallback data), show the card chips instead
+  const body = rows || (it.spec||[]).map(s=>`<div class="ds-row"><span class="ds-v">${s}</span></div>`).join("");
+
+  const wa = "https://wa.me/213552425776?text=" +
+             encodeURIComponent(`${t.brand_wa} ${brand} ${it.model}`);
+  const price = it.was
+    ? `<span class="ds-was">${it.was}</span><span class="ds-amt">${it.price}</span> <span class="ds-cur">${t.currency}</span>`
+    : `<span class="ds-amt">${it.price}</span> <span class="ds-cur">${t.currency}</span>`;
+
+  document.getElementById("detailBody").innerHTML = `
+    ${it.image ? `<img class="ds-img" src="${it.image}" alt="" onerror="this.remove()">` : ``}
+    <div class="ds-head">
+      <div class="ds-mark">${brandLogo(brand,"ds")}</div>
+      <div>
+        <div class="ds-brand">${brand}</div>
+        <div class="ds-model">${it.model}</div>
+      </div>
+    </div>
+    <div class="ds-price">${price}</div>
+    <div class="ds-tags">
+      ${it.isNew?`<span class="lc-tag new">${t.tag_new}</span>`:``}
+      ${it.was?`<span class="lc-tag sale">${t.tag_sale}</span>`:``}
+      <span class="lc-tag stock">${t.status_in}</span>
+    </div>
+    <div class="ds-specs">${body}</div>
+    <a class="ds-wa" href="${wa}" target="_blank" rel="noopener">${t.ds_ask}</a>
+    ${it.link?`<a class="ds-link" href="${it.link}" target="_blank" rel="noopener">${t.ds_post} ↗</a>`:``}
+  `;
+  const m = document.getElementById("detail");
+  m.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeDetail(){
+  document.getElementById("detail").classList.remove("open");
+  document.body.style.overflow="";
+}
+function allItems(){
+  let items=[];
+  BRANDS.forEach(b=>(CATALOG[b]||[]).forEach(it=>items.push(Object.assign({brand:b},it))));
+  return items;
+}
+
+/* ---- all laptops ---- */
+function openAll(){ allFilter="ALL"; renderAll(); go('all'); }
+function setAllFilter(b){ allFilter=b; renderAll(); }
+function renderAll(){
+  const t=I18N[lang], items=allItems();
+  const chips=[["ALL",t.all_brands]].concat(BRANDS.map(b=>[b,b]));
+  document.getElementById("allFilters").innerHTML=chips.map(c=>
+    `<button class="filter-chip ${allFilter===c[0]?'on':''}" onclick="setAllFilter('${c[0]}')">${c[1]}</button>`
+  ).join("");
+  const shown = allFilter==="ALL" ? items : items.filter(x=>x.brand===allFilter);
+  document.getElementById("allSub").textContent=`${items.length} ${t.brand_models} · ${t.all_available}`;
+  document.getElementById("allList").innerHTML=shown.map(it=>laptopCard(it,it.brand,true)).join("");
+}
+
+/* ---- new arrivals ---- */
+function openNew(){ renderNew(); go('new'); }
+function renderNew(){
+  const t=I18N[lang], items=allItems().filter(x=>x.isNew);
+  document.getElementById("newSub").textContent=`${items.length} ${t.new_count}`;
+  document.getElementById("newList").innerHTML=items.map(it=>laptopCard(it,it.brand,true)).join("");
+}
+
+/* ---- sale ---- */
+function openSale(){ renderSale(); go('sale'); }
+function renderSale(){
+  const t=I18N[lang], items=allItems().filter(x=>x.was);
+  document.getElementById("saleSub").textContent=`${items.length} ${t.sale_count}`;
+  document.getElementById("saleList").innerHTML=items.map(it=>laptopCard(it,it.brand,true)).join("");
+}
+
+function openBrand(b){
+  currentBrand=b; currentCat=null;
+  renderBrand();
+  go('brand');
+}
+function renderBrand(){
+  if(!currentBrand) return;
+  const t=I18N[lang], b=currentBrand, items=CATALOG[b]||[];
+  document.getElementById("brandEyebrow").textContent="/ "+b.toLowerCase();
+  document.getElementById("brandTitle").textContent=b;
+  document.getElementById("brandSub").textContent=`${items.length} ${t.brand_models} · ${t.all_available}`;
+  document.getElementById("brandList").innerHTML=items.map(it=>laptopCard(it,b,false)).join("");
+}
+
+/* ---- use-case collection page (reuses the brand view) ---- */
+function openCat(c){
+  currentCat=c; currentBrand=null;
+  renderCat();
+  go('brand');
+}
+function renderCat(){
+  if(!currentCat) return;
+  const t=I18N[lang], c=currentCat, items=itemsInCat(c);
+  document.getElementById("brandEyebrow").textContent="/ "+(t.cat_eyebrows[c]||c);
+  document.getElementById("brandTitle").textContent=t.cats[c];
+  document.getElementById("brandSub").textContent=
+    `${items.length} ${t.brand_models} · ${t.all_available}`;
+  document.getElementById("brandList").innerHTML=
+    items.map(it=>laptopCard(it,it.brand,true)).join("")
+    || `<div style="padding:40px 0;color:var(--text-dim)">${t.cat_empty}</div>`;
+}
+
+/* ---- lang ---- */
+function toggleLang(e){e.stopPropagation();document.getElementById("langDrop").classList.toggle("open");}
+function setLang(l){
+  lang=l;
+  document.documentElement.lang=l;
+  document.documentElement.dir=(l==="ar")?"rtl":"ltr";
+  document.getElementById("langDrop").classList.remove("open");
+  render();
+}
+document.addEventListener("click",()=>{document.getElementById("langDrop").classList.remove("open");closeMenu();});
+
+/* ---- theme ---- */
+const THEME_BG={dark:"#0A0E1A",light:"#EDEFF5"};
+const THEME_FG={dark:"#F2F3F7",light:"#0A0E1A"};
+// adopt whatever the pre-paint head script already set
+theme = document.documentElement.getAttribute("data-theme")==="dark" ? "dark" : "light";
+function applyTheme(){
+  const root=document.documentElement;
+  root.setAttribute("data-theme",theme);
+  root.style.colorScheme=theme;
+  root.style.background=THEME_BG[theme];
+  document.body.style.background=THEME_BG[theme];
+  document.body.style.color=THEME_FG[theme];
+  const btn=document.getElementById("themeBtn");
+  if(btn) btn.textContent=theme==="dark"?"◐":"◑";
+  try{ localStorage.setItem("dz-theme",theme); }catch(e){}
+}
+function toggleTheme(){
+  theme=theme==="dark"?"light":"dark";
+  applyTheme();
+}
+
+/* ---- load live catalogue from Supabase ----
+   Falls back to the built-in CATALOG if Supabase isn't configured or is
+   unreachable, so the site always shows something. */
+async function loadCatalogue(){
+  if (!SUPABASE_URL || SUPABASE_URL.includes("YOUR-PROJECT")) return; // not wired up yet
+  try{
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/laptops_public?select=*&order=sort_order.asc,posted_at.desc`,
+      { headers: { apikey: SUPABASE_ANON, Authorization: "Bearer " + SUPABASE_ANON } }
+    );
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) return;   // keep fallback data
+
+    // rebuild CATALOG from the database
+    const next = {};
+    BRANDS.forEach(b => next[b] = []);
+    rows.forEach(r => {
+      const brand = BRANDS.includes(r.brand) ? r.brand : "Others";
+      next[brand].push({
+        model: r.model,
+        spec: Array.isArray(r.card_specs) ? r.card_specs : [],
+        price: (r.price ?? 0).toLocaleString("fr-FR").replace(/\u202f|\u00a0/g, " "),
+        was: r.on_sale && r.was_price
+             ? r.was_price.toLocaleString("fr-FR").replace(/\u202f|\u00a0/g, " ")
+             : undefined,
+        isNew: !!r.is_new,
+        cat: r.cat || null,          // admin override; null => auto-guess from specs
+        full: r.full_specs || {},
+        image: r.image_url || null,
+        link: r.permalink || null,
+      });
+    });
+    Object.keys(next).forEach(b => { if (!next[b].length) delete next[b]; });
+
+    Object.keys(CATALOG).forEach(k => delete CATALOG[k]);
+    Object.assign(CATALOG, next);
+
+    render();          // redraw every page with the live data
+    if (currentBrand) renderBrand();
+  }catch(e){
+    console.warn("Catalogue load failed, using built-in data:", e.message);
+  }
+}
+
+/* init */
+applyTheme();
+go('home');
+render();
+loadCatalogue();
+</script>
+<!-- ===== LAPTOP DETAIL SHEET ===== -->
+<div class="ds-backdrop" id="detail" onclick="if(event.target===this)closeDetail()">
+  <div class="ds-panel" role="dialog" aria-modal="true">
+    <button class="ds-close" onclick="closeDetail()" aria-label="Close">✕</button>
+    <div id="detailBody"></div>
+  </div>
+</div>
+</body>
+</html>
